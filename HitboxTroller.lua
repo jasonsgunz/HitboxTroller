@@ -268,23 +268,29 @@ local function updateBtn(btn,state)
     end
 end
 
+-- CENTRALIZED TOGGLE FUNCTION
+local function toggleOption(opt)
+    opt.enabled = not opt.enabled
+    updateBtn(opt.toggleBtn, opt.enabled)
+end
+
+-- CONNECT GUI BUTTONS
 for _,opt in pairs(selfOptions) do
     opt.toggleBtn.MouseButton1Click:Connect(function()
-        opt.enabled = not opt.enabled
-        updateBtn(opt.toggleBtn,opt.enabled)
+        toggleOption(opt)
     end)
     opt.powerBox.FocusLost:Connect(function()
-        local val=tonumber(opt.powerBox.Text)
-        if val then opt.value=val end
+        local val = tonumber(opt.powerBox.Text)
+        if val then opt.value = val end
     end)
 end
 
-UserInputService.InputBegan:Connect(function(input,gp)
+-- CONNECT KEYBOARD SHORTCUTS
+UserInputService.InputBegan:Connect(function(input, gp)
     if gp then return end
     for _,opt in pairs(selfOptions) do
-        if input.KeyCode==opt.key then
-            opt.enabled = not opt.enabled
-            updateBtn(opt.toggleBtn,opt.enabled)
+        if input.KeyCode == opt.key then
+            toggleOption(opt)
         end
     end
 end)
@@ -312,7 +318,7 @@ RunService.RenderStepped:Connect(function()
     end
 end)
 
--- === FLY SCRIPT INTEGRATED (FIXED W/S + A/D + HOVER) ===
+-- === FLY SCRIPT (FIXED MOVEMENT) ===
 local flying = false
 local tpwalking = false
 local ctrl = {f=0,b=0,l=0,r=0}
@@ -345,7 +351,6 @@ local function startFly()
         RunService.RenderStepped:Wait()
         local moveSpeed = (tonumber(selfOptions.fly.powerBox.Text) or 1)*30
 
-        -- FIXED LEFT/RIGHT MOVEMENT
         local moveVec = Vector3.new(ctrl.r - ctrl.l, 0, ctrl.f - ctrl.b)
         if moveVec.Magnitude>0 then moveVec = moveVec.Unit end
 
@@ -375,10 +380,7 @@ end
 
 -- FLY TOGGLE
 selfOptions.fly.toggleBtn.MouseButton1Click:Connect(function()
-    selfOptions.fly.enabled = not selfOptions.fly.enabled
-    selfOptions.fly.toggleBtn.BackgroundColor3 = selfOptions.fly.enabled and Color3.fromRGB(60,160,60) or Color3.fromRGB(200,50,50)
-    selfOptions.fly.toggleBtn.Text = "Fly: "..(selfOptions.fly.enabled and "ON" or "OFF")
-
+    toggleOption(selfOptions.fly)
     if selfOptions.fly.enabled and not flying then
         spawn(startFly)
     elseif not selfOptions.fly.enabled and flying then
@@ -386,7 +388,7 @@ selfOptions.fly.toggleBtn.MouseButton1Click:Connect(function()
     end
 end)
 
--- FLY WASD CONTROLS (FIXED)
+-- FLY WASD CONTROLS
 UserInputService.InputBegan:Connect(function(input,gp)
     if gp then return end
     if input.KeyCode == Enum.KeyCode.W then ctrl.f=1 end
