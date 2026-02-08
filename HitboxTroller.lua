@@ -1,2 +1,409 @@
--- Obfuscated Lua
-loadstring(game:HttpGet('data:text/plain;base64,LS0gU0VSVklDRVMKbG9jYWwgdmFyX3F2dmJ0cCA9IGdhbWU6R2V0U2VydmljZSgiUGxheWVycyIpCmxvY2FsIHZhcl9sdDdjYmcgPSBnYW1lOkdldFNlcnZpY2UoIlJ1blNlcnZpY2UiKQpsb2NhbCB2YXJfN3B5cGQwID0gZ2FtZTpHZXRTZXJ2aWNlKCJVc2VySW5wdXRTZXJ2aWNlIikKCmxvY2FsIHZhcl9zd2tvYncgPSBQbGF5ZXJzLkxvY2FsUGxheWVyCnJlcGVhdCB0YXNrLndhaXQoKSB1bnRpbCBwbGF5ZXIKbG9jYWwgdmFyX2ZzM2VkbCA9IHBsYXllcjpXYWl0Rm9yQ2hpbGQoIlBsYXllckd1aSIpCgppZiBwbGF5ZXJHdWk6RmluZEZpcnN0Q2hpbGQoIkhpdGJveFRyb2xsZXIiKSB0aGVuCiAgICBwbGF5ZXJHdWkuSGl0Ym94VHJvbGxlcjpEZXN0cm95KCkKZW5kCgotLSBHVUkgU0VUVVAKbG9jYWwgdmFyXzBlZHBtYiA9IEluc3RhbmNlLm5ldygiU2NyZWVuR3VpIikKZ3VpLk5hbWUgPSAiSGl0Ym94VHJvbGxlciIKZ3VpLlBhcmVudCA9IHBsYXllckd1aQpndWkuUmVzZXRPblNwYXduID0gZmFsc2UKCmxvY2FsIHZhcl80cGFoM3kgPSBJbnN0YW5jZS5uZXcoIkZyYW1lIiwgZ3VpKQpmcmFtZS5TaXplID0gVURpbTIuZnJvbU9mZnNldCg0MDAsIDM1MCkKZnJhbWUuUG9zaXRpb24gPSBVRGltMi5mcm9tU2NhbGUoMC41LDAuNSkKZnJhbWUuQW5jaG9yUG9pbnQgPSBWZWN0b3IyLm5ldygwLjUsMC41KQpmcmFtZS5CYWNrZ3JvdW5kQ29sb3IzID0gQ29sb3IzLmZyb21SR0IoMzAsMzAsMzUpCkluc3RhbmNlLm5ldygiVUlDb3JuZXIiLCBmcmFtZSkuQ29ybmVyUmFkaXVzID0gVURpbS5uZXcoMCwxMikKCi0tIERSQUdHSU5HCmxvY2FsIHZhcl93MTZnOXgsIGRyYWdTdGFydCwgc3RhcnRQb3MKZnJhbWUuSW5wdXRCZWdhbjpDb25uZWN0KGZ1bmN0aW9uKGlucHV0KQogICAgaWYgaW5wdXQuVXNlcklucHV0VHlwZT09RW51bS5Vc2VySW5wdXRUeXBlLk1vdXNlQnV0dG9uMSB0aGVuCiAgICAgICAgZHJhZ2dpbmcgPSB0cnVlCiAgICAgICAgZHJhZ1N0YXJ0ID0gaW5wdXQuUG9zaXRpb24KICAgICAgICBzdGFydFBvcyA9IGZyYW1lLlBvc2l0aW9uCiAgICBlbmQKZW5kKQpVc2VySW5wdXRTZXJ2aWNlLklucHV0Q2hhbmdlZDpDb25uZWN0KGZ1bmN0aW9uKGlucHV0KQogICAgaWYgZHJhZ2dpbmcgYW5kIGlucHV0LlVzZXJJbnB1dFR5cGU9PUVudW0uVXNlcklucHV0VHlwZS5Nb3VzZU1vdmVtZW50IHRoZW4KICAgICAgICBsb2NhbCB2YXJfMHdnNmJpID0gaW5wdXQuUG9zaXRpb24gLSBkcmFnU3RhcnQKICAgICAgICBmcmFtZS5Qb3NpdGlvbiA9IFVEaW0yLm5ldyhzdGFydFBvcy5YLlNjYWxlLHN0YXJ0UG9zLlguT2Zmc2V0K2RlbHRhLlgsc3RhcnRQb3MuWS5TY2FsZSxzdGFydFBvcy5ZLk9mZnNldCtkZWx0YS5ZKQogICAgZW5kCmVuZCkKVXNlcklucHV0U2VydmljZS5JbnB1dEVuZGVkOkNvbm5lY3QoZnVuY3Rpb24oaW5wdXQpCiAgICBpZiBpbnB1dC5Vc2VySW5wdXRUeXBlPT1FbnVtLlVzZXJJbnB1dFR5cGUuTW91c2VCdXR0b24xIHRoZW4KICAgICAgICBkcmFnZ2luZz1mYWxzZQogICAgZW5kCmVuZCkKCi0tIEhFQURFUgpsb2NhbCB2YXJfam92YWppID0gSW5zdGFuY2UubmV3KCJUZXh0TGFiZWwiLCBmcmFtZSkKaGVhZGVyLlNpemUgPSBVRGltMi5uZXcoMSwwLDAsNDUpCmhlYWRlci5CYWNrZ3JvdW5kQ29sb3IzID0gQ29sb3IzLmZyb21SR0IoNDUsNDUsNTApCmhlYWRlci5UZXh0ID0gIkhpdGJveFRyb2xsZXIiCmhlYWRlci5UZXh0Q29sb3IzID0gQ29sb3IzLmZyb21SR0IoMjU1LDI1NSwyNTUpCmhlYWRlci5Gb250ID0gRW51bS5Gb250LkdvdGhhbUJvbGQKaGVhZGVyLlRleHRTaXplID0gMjIKSW5zdGFuY2UubmV3KCJVSUNvcm5lciIsIGhlYWRlcikuQ29ybmVyUmFkaXVzID0gVURpbS5uZXcoMCwxMikKCmxvY2FsIHZhcl9nYmQ0cWQgPSBJbnN0YW5jZS5uZXcoIlRleHRCdXR0b24iLCBmcmFtZSkKY2xvc2VCdG4uU2l6ZSA9IFVEaW0yLmZyb21PZmZzZXQoMzAsMzApCmNsb3NlQnRuLlBvc2l0aW9uID0gVURpbTIubmV3KDEsLTM2LDAsNykKY2xvc2VCdG4uVGV4dCA9ICJYIgpjbG9zZUJ0bi5CYWNrZ3JvdW5kQ29sb3IzID0gQ29sb3IzLmZyb21SR0IoMjAwLDUwLDUwKQpJbnN0YW5jZS5uZXcoIlVJQ29ybmVyIiwgY2xvc2VCdG4pCmNsb3NlQnRuLk1vdXNlQnV0dG9uMUNsaWNrOkNvbm5lY3QoZnVuY3Rpb24oKSBndWk6RGVzdHJveSgpIGVuZCkKCi0tIFNFQ1RJT05TCmxvY2FsIHZhcl9oMTA0NXogPSB7Ik1haW4iLCJTZWxmIn0KbG9jYWwgdmFyXzFsbGUwYiA9ICJNYWluIgpsb2NhbCB2YXJfNDEwNmwxID0ge30KZm9yIGksbmFtZSBpbiBpcGFpcnMoc2VjdGlvbnMpIGRvCiAgICBsb2NhbCB2YXJfdmg3bWF4ID0gSW5zdGFuY2UubmV3KCJUZXh0QnV0dG9uIiwgZnJhbWUpCiAgICBidG4uU2l6ZSA9IFVEaW0yLmZyb21PZmZzZXQoOTAsMjgpCiAgICBidG4uUG9zaXRpb24gPSBVRGltMi5mcm9tT2Zmc2V0KDEwKyhpLTEpKjEwMCw1NSkKICAgIGJ0bi5UZXh0ID0gbmFtZQogICAgYnRuLkZvbnQgPSBFbnVtLkZvbnQuR290aGFtCiAgICBidG4uVGV4dFNpemUgPSAxNgogICAgYnRuLkJhY2tncm91bmRDb2xvcjMgPSBDb2xvcjMuZnJvbVJHQig3MCw3MCw3NSkKICAgIEluc3RhbmNlLm5ldygiVUlDb3JuZXIiLCBidG4pCiAgICBidG4uTW91c2VCdXR0b24xQ2xpY2s6Q29ubmVjdChmdW5jdGlvbigpCiAgICAgICAgYWN0aXZlU2VjdGlvbj1uYW1lCiAgICAgICAgZm9yIF8sYiBpbiBwYWlycyhzZWN0aW9uQnV0dG9ucykgZG8gYi5CYWNrZ3JvdW5kQ29sb3IzPUNvbG9yMy5mcm9tUkdCKDcwLDcwLDc1KSBlbmQKICAgICAgICBidG4uQmFja2dyb3VuZENvbG9yMz1Db2xvcjMuZnJvbVJHQig2MCwxNjAsNjApCiAgICAgICAgZm9yIF8sdiBpbiBwYWlycyhmcmFtZTpHZXRDaGlsZHJlbigpKSBkbwogICAgICAgICAgICBpZiB2OklzQSgiRnJhbWUiKSBhbmQgdjpGaW5kRmlyc3RDaGlsZCgiU2VjdGlvblRhZyIpIHRoZW4KICAgICAgICAgICAgICAgIHYuVmlzaWJsZSA9ICh2LlNlY3Rpb25UYWcuVmFsdWU9PWFjdGl2ZVNlY3Rpb24pCiAgICAgICAgICAgIGVuZAogICAgICAgIGVuZAogICAgZW5kKQogICAgc2VjdGlvbkJ1dHRvbnNbaV09YnRuCmVuZApzZWN0aW9uQnV0dG9uc1sxXS5CYWNrZ3JvdW5kQ29sb3IzPUNvbG9yMy5mcm9tUkdCKDYwLDE2MCw2MCkKCi0tIE1BSU4gU0VDVElPTgpsb2NhbCB2YXJfbzI3dHV0ID0gSW5zdGFuY2UubmV3KCJGcmFtZSIsIGZyYW1lKQptYWluRnJhbWUuU2l6ZSA9IFVEaW0yLmZyb21PZmZzZXQoMzgwLDI1MCkKbWFpbkZyYW1lLlBvc2l0aW9uID0gVURpbTIuZnJvbU9mZnNldCgxMCw5MCkKbWFpbkZyYW1lLkJhY2tncm91bmRUcmFuc3BhcmVuY3kgPSAxCmxvY2FsIHZhcl9iZmw0emwgPSBJbnN0YW5jZS5uZXcoIlN0cmluZ1ZhbHVlIiwgbWFpbkZyYW1lKQp0YWcuTmFtZSA9ICJTZWN0aW9uVGFnIgp0YWcuVmFsdWUgPSAiTWFpbiIKbWFpbkZyYW1lLlZpc2libGUgPSB0cnVlCgotLSBISVRCT1ggVkFSSUFCTEVTCmxvY2FsIHZhcl93YWhlZG49ZmFsc2UKbG9jYWwgdmFyX3p3Y3N5OD00CmxvY2FsIHZhcl9zNmQwNXE9ZmFsc2UKbG9jYWwgdmFyX2VvaTF6cT17fQoKLS0gSElUQk9YIFVJCmxvY2FsIHZhcl9kNjN5eTUgPSBJbnN0YW5jZS5uZXcoIlRleHRCdXR0b24iLG1haW5GcmFtZSkKaGl0Ym94VG9nZ2xlLlBvc2l0aW9uID0gVURpbTIuZnJvbU9mZnNldCgxMCwxMCkKaGl0Ym94VG9nZ2xlLlNpemUgPSBVRGltMi5mcm9tT2Zmc2V0KDE0MCwzNSkKaGl0Ym94VG9nZ2xlLlRleHQ9IkhpdGJveDogT0ZGIgpoaXRib3hUb2dnbGUuQmFja2dyb3VuZENvbG9yMz1Db2xvcjMuZnJvbVJHQigyMDAsNTAsNTApCkluc3RhbmNlLm5ldygiVUlDb3JuZXIiLGhpdGJveFRvZ2dsZSkuQ29ybmVyUmFkaXVzPVVEaW0ubmV3KDAsNikKCmxvY2FsIHZhcl9hbWNsdnMgPSBJbnN0YW5jZS5uZXcoIlRleHRCb3giLG1haW5GcmFtZSkKaGl0Ym94SW5wdXQuUG9zaXRpb24gPSBVRGltMi5mcm9tT2Zmc2V0KDE2MCwxMCkKaGl0Ym94SW5wdXQuU2l6ZSA9IFVEaW0yLmZyb21PZmZzZXQoNjAsMzUpCmhpdGJveElucHV0LlRleHQ9dG9zdHJpbmcoaGl0Ym94U2l6ZSkKaGl0Ym94SW5wdXQuQ2xlYXJUZXh0T25Gb2N1cz1mYWxzZQpoaXRib3hJbnB1dC5CYWNrZ3JvdW5kQ29sb3IzID0gQ29sb3IzLmZyb21SR0IoNTAsNTAsNTUpCmhpdGJveElucHV0LlRleHRDb2xvcjMgPSBDb2xvcjMuZnJvbVJHQigyNTUsMjU1LDI1NSkKSW5zdGFuY2UubmV3KCJVSUNvcm5lciIsaGl0Ym94SW5wdXQpLkNvcm5lclJhZGl1cyA9IFVEaW0ubmV3KDAsNikKCmxvY2FsIHZhcl9tNnJ6dWYgPSBJbnN0YW5jZS5uZXcoIlRleHRCdXR0b24iLG1haW5GcmFtZSkKdmlzdWFsVG9nZ2xlLlBvc2l0aW9uID0gVURpbTIuZnJvbU9mZnNldCgyMzAsMTApCnZpc3VhbFRvZ2dsZS5TaXplID0gVURpbTIuZnJvbU9mZnNldCgxNDAsMzUpCnZpc3VhbFRvZ2dsZS5UZXh0PSJWaXN1YWxpemVyOiBPRkYiCnZpc3VhbFRvZ2dsZS5CYWNrZ3JvdW5kQ29sb3IzPUNvbG9yMy5mcm9tUkdCKDIwMCw1MCw1MCkKSW5zdGFuY2UubmV3KCJVSUNvcm5lciIsdmlzdWFsVG9nZ2xlKS5Db3JuZXJSYWRpdXM9VURpbS5uZXcoMCw2KQoKLS0gSElUQk9YIEZVTkNUSU9OUwpsb2NhbCB2YXJfY2FsbzZsIGFwcGx5SGl0Ym94KHBscikKICAgIGlmIG5vdCBoaXRib3hFbmFibGVkIG9yIHBscj09cGxheWVyIHRoZW4gcmV0dXJuIGVuZAogICAgbG9jYWwgdmFyX3VnYzd5NiA9IHBsci5DaGFyYWN0ZXIKICAgIGlmIG5vdCBjaGFyIHRoZW4gcmV0dXJuIGVuZAogICAgbG9jYWwgdmFyXzBxYzltMyA9IGNoYXI6RmluZEZpcnN0Q2hpbGQoIkh1bWFub2lkUm9vdFBhcnQiKQogICAgaWYgbm90IGhycCB0aGVuIHJldHVybiBlbmQKICAgIGlmIGhpdGJveERhdGFbcGxyXSB0aGVuCiAgICAgICAgaWYgaGl0Ym94RGF0YVtwbHJdLmNvbm4gdGhlbiBoaXRib3hEYXRhW3Bscl0uY29ubjpEaXNjb25uZWN0KCkgZW5kCiAgICAgICAgaWYgaGl0Ym94RGF0YVtwbHJdLnZpeiB0aGVuIGhpdGJveERhdGFbcGxyXS52aXo6RGVzdHJveSgpIGVuZAogICAgICAgIGlmIGhpdGJveERhdGFbcGxyXS5iaWxsYm9hcmQgdGhlbiBoaXRib3hEYXRhW3Bscl0uYmlsbGJvYXJkOkRlc3Ryb3koKSBlbmQKICAgIGVuZAogICAgbG9jYWwgdmFyX3o0ODEzOQogICAgbG9jYWwgdmFyXzc3ajU1MgogICAgaWYgaGl0Ym94VmlzdWFsIHRoZW4KICAgICAgICAtLSBOZW9uIHBhcnQKICAgICAgICB2aXogPSBJbnN0YW5jZS5uZXcoIlBhcnQiLHdvcmtzcGFjZSkKICAgICAgICB2aXouQW5jaG9yZWQ9dHJ1ZQogICAgICAgIHZpei5DYW5Db2xsaWRlPWZhbHNlCiAgICAgICAgdml6LlRyYW5zcGFyZW5jeT0wLjMKICAgICAgICB2aXouQ29sb3I9Q29sb3IzLmZyb21SR0IoMjU1LDAsMCkKICAgICAgICB2aXouTWF0ZXJpYWwgPSBFbnVtLk1hdGVyaWFsLk5lb24KICAgICAgICB2aXouQ2FzdFNoYWRvdyA9IGZhbHNlCgogICAgICAgIC0tIEJpbGxib2FyZEd1aSBmb3IgYWx3YXlzIHZpc2libGUKICAgICAgICBiaWxsYm9hcmQgPSBJbnN0YW5jZS5uZXcoIkJpbGxib2FyZEd1aSIsIGhycCkKICAgICAgICBiaWxsYm9hcmQuU2l6ZSA9IFVEaW0yLm5ldygwLDEwMCwwLDEwMCkKICAgICAgICBiaWxsYm9hcmQuQWx3YXlzT25Ub3AgPSB0cnVlCiAgICAgICAgYmlsbGJvYXJkLlJlc2V0T25TcGF3biA9IGZhbHNlCiAgICAgICAgbG9jYWwgdmFyXzQ4aXJ2YSA9IEluc3RhbmNlLm5ldygiRnJhbWUiLCBiaWxsYm9hcmQpCiAgICAgICAgYmJGcmFtZS5TaXplID0gVURpbTIuZnJvbVNjYWxlKDEsMSkKICAgICAgICBiYkZyYW1lLkJhY2tncm91bmRDb2xvcjMgPSBDb2xvcjMuZnJvbVJHQigyNTUsMCwwKQogICAgICAgIGJiRnJhbWUuQmFja2dyb3VuZFRyYW5zcGFyZW5jeSA9IDAuMwogICAgICAgIGJiRnJhbWUuQm9yZGVyU2l6ZVBpeGVsID0gMAogICAgZW5kCiAgICBsb2NhbCB2YXJfZTU2YWZ4CiAgICBjb25uID0gUnVuU2VydmljZS5SZW5kZXJTdGVwcGVkOkNvbm5lY3QoZnVuY3Rpb24oKQogICAgICAgIGlmIG5vdCBocnAuUGFyZW50IHRoZW4KICAgICAgICAgICAgaWYgdml6IHRoZW4gdml6OkRlc3Ryb3koKSBlbmQKICAgICAgICAgICAgaWYgYmlsbGJvYXJkIHRoZW4gYmlsbGJvYXJkOkRlc3Ryb3koKSBlbmQKICAgICAgICAgICAgY29ubjpEaXNjb25uZWN0KCkKICAgICAgICAgICAgcmV0dXJuCiAgICAgICAgZW5kCiAgICAgICAgaHJwLlNpemU9VmVjdG9yMy5uZXcoaGl0Ym94U2l6ZSxoaXRib3hTaXplLGhpdGJveFNpemUpCiAgICAgICAgaHJwLkNhbkNvbGxpZGU9ZmFsc2UKICAgICAgICBpZiB2aXogdGhlbiB2aXouQ0ZyYW1lPWhycC5DRnJhbWUgdml6LlNpemU9aHJwLlNpemUgZW5kCiAgICBlbmQpCiAgICBoaXRib3hEYXRhW3Bscl09e2Nvbm49Y29ubix2aXo9dml6LGJpbGxib2FyZD1iaWxsYm9hcmR9CmVuZAoKbG9jYWwgdmFyX2ZudXo0cSByZWFwcGx5SGl0Ym94ZXMoKQogICAgZm9yIF8sdiBpbiBwYWlycyhoaXRib3hEYXRhKSBkbwogICAgICAgIGlmIHYuY29ubiB0aGVuIHYuY29ubjpEaXNjb25uZWN0KCkgZW5kCiAgICAgICAgaWYgdi52aXogdGhlbiB2LnZpejpEZXN0cm95KCkgZW5kCiAgICAgICAgaWYgdi5iaWxsYm9hcmQgdGhlbiB2LmJpbGxib2FyZDpEZXN0cm95KCkgZW5kCiAgICBlbmQKICAgIGhpdGJveERhdGE9e30KICAgIGZvciBfLHAgaW4gcGFpcnMoUGxheWVyczpHZXRQbGF5ZXJzKCkpIGRvIGFwcGx5SGl0Ym94KHApIGVuZAplbmQKCmhpdGJveFRvZ2dsZS5Nb3VzZUJ1dHRvbjFDbGljazpDb25uZWN0KGZ1bmN0aW9uKCkKICAgIGhpdGJveEVuYWJsZWQ9bm90IGhpdGJveEVuYWJsZWQKICAgIGhpdGJveFRvZ2dsZS5UZXh0PSJIaXRib3g6ICIuLihoaXRib3hFbmFibGVkIGFuZCAiT04iIG9yICJPRkYiKQogICAgaGl0Ym94VG9nZ2xlLkJhY2tncm91bmRDb2xvcjM9aGl0Ym94RW5hYmxlZCBhbmQgQ29sb3IzLmZyb21SR0IoNjAsMTYwLDYwKSBvciBDb2xvcjMuZnJvbVJHQigyMDAsNTAsNTApCiAgICByZWFwcGx5SGl0Ym94ZXMoKQplbmQpCmhpdGJveElucHV0LkZvY3VzTG9zdDpDb25uZWN0KGZ1bmN0aW9uKCkKICAgIGxvY2FsIHZhcl95Y25ubjk9dG9udW1iZXIoaGl0Ym94SW5wdXQuVGV4dCkKICAgIGlmIHZhbCB0aGVuIGhpdGJveFNpemU9dmFsIHJlYXBwbHlIaXRib3hlcygpIGVuZAplbmQpCnZpc3VhbFRvZ2dsZS5Nb3VzZUJ1dHRvbjFDbGljazpDb25uZWN0KGZ1bmN0aW9uKCkKICAgIGhpdGJveFZpc3VhbD1ub3QgaGl0Ym94VmlzdWFsCiAgICB2aXN1YWxUb2dnbGUuVGV4dD0iVmlzdWFsaXplcjogIi4uKGhpdGJveFZpc3VhbCBhbmQgIk9OIiBvciAiT0ZGIikKICAgIHZpc3VhbFRvZ2dsZS5CYWNrZ3JvdW5kQ29sb3IzPWhpdGJveFZpc3VhbCBhbmQgQ29sb3IzLmZyb21SR0IoNjAsMTYwLDYwKSBvciBDb2xvcjMuZnJvbVJHQigyMDAsNTAsNTApCiAgICByZWFwcGx5SGl0Ym94ZXMoKQplbmQpCgpQbGF5ZXJzLlBsYXllckFkZGVkOkNvbm5lY3QoZnVuY3Rpb24ocCkKICAgIHAuQ2hhcmFjdGVyQWRkZWQ6Q29ubmVjdChmdW5jdGlvbigpIHRhc2sud2FpdCgwLjEpIGFwcGx5SGl0Ym94KHApIGVuZCkKZW5kKQpmb3IgXyxwIGluIHBhaXJzKFBsYXllcnM6R2V0UGxheWVycygpKSBkbwogICAgcC5DaGFyYWN0ZXJBZGRlZDpDb25uZWN0KGZ1bmN0aW9uKCkgdGFzay53YWl0KDAuMSkgYXBwbHlIaXRib3gocCkgZW5kKQplbmQKCi0tIFNFTEYgU0VDVElPTgpsb2NhbCB2YXJfZGtodmhxID0gSW5zdGFuY2UubmV3KCJGcmFtZSIsZnJhbWUpCnNlbGZGcmFtZS5TaXplPVVEaW0yLmZyb21PZmZzZXQoMzgwLDI1MCkKc2VsZkZyYW1lLlBvc2l0aW9uPVVEaW0yLmZyb21PZmZzZXQoMTAsOTApCnNlbGZGcmFtZS5CYWNrZ3JvdW5kVHJhbnNwYXJlbmN5ID0gMQpsb2NhbCB2YXJfd3N3NHlmPUluc3RhbmNlLm5ldygiU3RyaW5nVmFsdWUiLHNlbGZGcmFtZSkKdGFnMi5OYW1lPSJTZWN0aW9uVGFnIgp0YWcyLlZhbHVlPSJTZWxmIgpzZWxmRnJhbWUuVmlzaWJsZSA9IGZhbHNlCgpsb2NhbCB2YXJfZnF5am1nPXsKICAgIHNwZWVkPXt2YWx1ZT0xNixlbmFibGVkPWZhbHNlLGtleT1FbnVtLktleUNvZGUuVH0sCiAgICBqdW1wPXt2YWx1ZT01MCxlbmFibGVkPWZhbHNlLGtleT1FbnVtLktleUNvZGUuWX0sCiAgICBmbHk9e3ZhbHVlPTEsZW5hYmxlZD1mYWxzZSxrZXk9RW51bS5LZXlDb2RlLlV9IC0tIERFRkFVTFQgRkxZIFNQRUVEID0gMQp9Cgpsb2NhbCB2YXJfdWFsYWxvPTEwCmZvciBuYW1lLG9wdCBpbiBwYWlycyhzZWxmT3B0aW9ucykgZG8KICAgIGxvY2FsIHZhcl8wM3Jzd2wgPSBJbnN0YW5jZS5uZXcoIlRleHRCdXR0b24iLHNlbGZGcmFtZSkKICAgIHRvZ2dsZS5Qb3NpdGlvbiA9IFVEaW0yLmZyb21PZmZzZXQoMTAseVN0YXJ0KQogICAgdG9nZ2xlLlNpemUgPSBVRGltMi5mcm9tT2Zmc2V0KDE0MCwzNSkKICAgIHRvZ2dsZS5UZXh0ID0gbmFtZTpzdWIoMSwxKTp1cHBlcigpLi5uYW1lOnN1YigyKS4uIjogT0ZGIgogICAgdG9nZ2xlLkJhY2tncm91bmRDb2xvcjMgPSBDb2xvcjMuZnJvbVJHQigyMDAsNTAsNTApCiAgICBJbnN0YW5jZS5uZXcoIlVJQ29ybmVyIiwgdG9nZ2xlKS5Db3JuZXJSYWRpdXMgPSBVRGltLm5ldygwLDYpCiAgICBvcHQudG9nZ2xlQnRuID0gdG9nZ2xlCgogICAgbG9jYWwgdmFyX3NmcnNtaSA9IEluc3RhbmNlLm5ldygiVGV4dEJ1dHRvbiIsc2VsZkZyYW1lKQogICAga2V5QnRuLlBvc2l0aW9uID0gVURpbTIuZnJvbU9mZnNldCgxNjAseVN0YXJ0KQogICAga2V5QnRuLlNpemUgPSBVRGltMi5mcm9tT2Zmc2V0KDYwLDM1KQogICAga2V5QnRuLlRleHQgPSBvcHQua2V5Lk5hbWUKICAgIGtleUJ0bi5CYWNrZ3JvdW5kQ29sb3IzID0gQ29sb3IzLmZyb21SR0IoNzAsNzAsNzApCiAgICBJbnN0YW5jZS5uZXcoIlVJQ29ybmVyIiwga2V5QnRuKS5Db3JuZXJSYWRpdXMgPSBVRGltLm5ldygwLDYpCiAgICBvcHQua2V5QnRuID0ga2V5QnRuCgogICAgbG9jYWwgdmFyX3p0ejlqcSA9IEluc3RhbmNlLm5ldygiVGV4dEJveCIsc2VsZkZyYW1lKQogICAgcG93ZXJCb3guUG9zaXRpb24gPSBVRGltMi5mcm9tT2Zmc2V0KDIzMCx5U3RhcnQpCiAgICBwb3dlckJveC5TaXplID0gVURpbTIuZnJvbU9mZnNldCg2MCwzNSkKICAgIHBvd2VyQm94LlRleHQgPSB0b3N0cmluZyhvcHQudmFsdWUpCiAgICBwb3dlckJveC5DbGVhclRleHRPbkZvY3VzPWZhbHNlCiAgICBwb3dlckJveC5CYWNrZ3JvdW5kQ29sb3IzID0gQ29sb3IzLmZyb21SR0IoNTAsNTAsNTUpCiAgICBwb3dlckJveC5UZXh0Q29sb3IzID0gQ29sb3IzLmZyb21SR0IoMjU1LDI1NSwyNTUpCiAgICBJbnN0YW5jZS5uZXcoIlVJQ29ybmVyIiwgcG93ZXJCb3gpLkNvcm5lclJhZGl1cz1VRGltLm5ldygwLDYpCiAgICBvcHQucG93ZXJCb3ggPSBwb3dlckJveAoKICAgIHlTdGFydD15U3RhcnQrNDUKZW5kCgpsb2NhbCB2YXJfam42ZGpiIHVwZGF0ZUJ0bihidG4sc3RhdGUpCiAgICBidG4uQmFja2dyb3VuZENvbG9yMyA9IHN0YXRlIGFuZCBDb2xvcjMuZnJvbVJHQig2MCwxNjAsNjApIG9yIENvbG9yMy5mcm9tUkdCKDIwMCw1MCw1MCkKCiAgICBpZiBzdGF0ZSB0aGVuCiAgICAgICAgYnRuLlRleHQgPSBidG4uVGV4dDpnc3ViKCJPRkYiLCJPTiIpCiAgICBlbHNlCiAgICAgICAgYnRuLlRleHQgPSBidG4uVGV4dDpnc3ViKCJPTiIsIk9GRiIpCiAgICBlbmQKZW5kCgoKZm9yIF8sb3B0IGluIHBhaXJzKHNlbGZPcHRpb25zKSBkbwogICAgb3B0LnRvZ2dsZUJ0bi5Nb3VzZUJ1dHRvbjFDbGljazpDb25uZWN0KGZ1bmN0aW9uKCkKICAgICAgICBvcHQuZW5hYmxlZCA9IG5vdCBvcHQuZW5hYmxlZAogICAgICAgIHVwZGF0ZUJ0bihvcHQudG9nZ2xlQnRuLG9wdC5lbmFibGVkKQogICAgZW5kKQogICAgb3B0LnBvd2VyQm94LkZvY3VzTG9zdDpDb25uZWN0KGZ1bmN0aW9uKCkKICAgICAgICBsb2NhbCB2YXJfZGs3M2JwPXRvbnVtYmVyKG9wdC5wb3dlckJveC5UZXh0KQogICAgICAgIGlmIHZhbCB0aGVuIG9wdC52YWx1ZT12YWwgZW5kCiAgICBlbmQpCmVuZAoKVXNlcklucHV0U2VydmljZS5JbnB1dEJlZ2FuOkNvbm5lY3QoZnVuY3Rpb24oaW5wdXQsZ3ApCiAgICBpZiBncCB0aGVuIHJldHVybiBlbmQKICAgIGZvciBfLG9wdCBpbiBwYWlycyhzZWxmT3B0aW9ucykgZG8KICAgICAgICBpZiBpbnB1dC5LZXlDb2RlPT1vcHQua2V5IHRoZW4KICAgICAgICAgICAgb3B0LmVuYWJsZWQgPSBub3Qgb3B0LmVuYWJsZWQKICAgICAgICAgICAgdXBkYXRlQnRuKG9wdC50b2dnbGVCdG4sb3B0LmVuYWJsZWQpCiAgICAgICAgZW5kCiAgICBlbmQKZW5kKQoKLS0gU1BFRUQgJiBKVU1QIEFQUExZIExPT1AKUnVuU2VydmljZS5SZW5kZXJTdGVwcGVkOkNvbm5lY3QoZnVuY3Rpb24oKQogICAgbG9jYWwgdmFyX3MydTJsdiA9IHBsYXllci5DaGFyYWN0ZXIKICAgIGlmIG5vdCBjaGFyIHRoZW4gcmV0dXJuIGVuZAoKICAgIGxvY2FsIHZhcl80b3FpZXkgPSBjaGFyOkZpbmRGaXJzdENoaWxkV2hpY2hJc0EoIkh1bWFub2lkIikKICAgIGlmIG5vdCBodW0gdGhlbiByZXR1cm4gZW5kCgogICAgLS0gU1BFRUQKICAgIGlmIHNlbGZPcHRpb25zLnNwZWVkLmVuYWJsZWQgdGhlbgogICAgICAgIGh1bS5XYWxrU3BlZWQgPSB0b251bWJlcihzZWxmT3B0aW9ucy5zcGVlZC5wb3dlckJveC5UZXh0KSBvciBzZWxmT3B0aW9ucy5zcGVlZC52YWx1ZQogICAgZWxzZQogICAgICAgIGh1bS5XYWxrU3BlZWQgPSAxNgogICAgZW5kCgogICAgLS0gSlVNUAogICAgaWYgc2VsZk9wdGlvbnMuanVtcC5lbmFibGVkIHRoZW4KICAgICAgICBodW0uSnVtcFBvd2VyID0gdG9udW1iZXIoc2VsZk9wdGlvbnMuanVtcC5wb3dlckJveC5UZXh0KSBvciBzZWxmT3B0aW9ucy5qdW1wLnZhbHVlCiAgICAgICAgaHVtLlVzZUp1bXBQb3dlciA9IHRydWUKICAgIGVsc2UKICAgICAgICBodW0uSnVtcFBvd2VyID0gNTAKICAgICAgICBodW0uVXNlSnVtcFBvd2VyID0gdHJ1ZQogICAgZW5kCmVuZCkKCi0tID09PSBGTFkgU0NSSVBUIElOVEVHUkFURUQgKEZJWEVEIFcvUyArIEEvRCArIEhPVkVSKSA9PT0KbG9jYWwgdmFyX3YyOGVuZiA9IGZhbHNlCmxvY2FsIHZhcl81bGlwbnMgPSBmYWxzZQpsb2NhbCB2YXJfeG5ubDVwID0ge2Y9MCxiPTAsbD0wLHI9MH0KCmxvY2FsIHZhcl9tbDYzb2Ugc3RhcnRGbHkoKQogICAgbG9jYWwgdmFyXzh2bGkwcCA9IFBsYXllcnMuTG9jYWxQbGF5ZXIKICAgIGxvY2FsIHZhcl92eXpuZmUgPSBwbHIuQ2hhcmFjdGVyCiAgICBpZiBub3QgY2hhciB0aGVuIHJldHVybiBlbmQKICAgIGxvY2FsIHZhcl84OG1zanIgPSBjaGFyOkZpbmRGaXJzdENoaWxkV2hpY2hJc0EoIkh1bWFub2lkIikKICAgIGxvY2FsIHZhcl9tbWQ5MXogPSBjaGFyOkZpbmRGaXJzdENoaWxkKCJIdW1hbm9pZFJvb3RQYXJ0Iikgb3IgY2hhcjpGaW5kRmlyc3RDaGlsZCgiVG9yc28iKSBvciBjaGFyOkZpbmRGaXJzdENoaWxkKCJVcHBlclRvcnNvIikKICAgIGlmIG5vdCBodW0gb3Igbm90IHJvb3QgdGhlbiByZXR1cm4gZW5kCgogICAgcGxyLkNoYXJhY3Rlci5BbmltYXRlLkRpc2FibGVkID0gdHJ1ZQogICAgZm9yIF8sdiBpbiBuZXh0LCBodW06R2V0UGxheWluZ0FuaW1hdGlvblRyYWNrcygpIGRvIHY6QWRqdXN0U3BlZWQoMCkgZW5kCgogICAgaHVtLlBsYXRmb3JtU3RhbmQgPSB0cnVlCiAgICBmbHlpbmcgPSB0cnVlCiAgICB0cHdhbGtpbmcgPSB0cnVlCgogICAgbG9jYWwgdmFyX241bXBjaiA9IEluc3RhbmNlLm5ldygiQm9keUd5cm8iLCByb290KQogICAgYmcuUCA9IDllNAogICAgYmcuTWF4VG9ycXVlID0gVmVjdG9yMy5uZXcoOWU5LDllOSw5ZTkpCiAgICBiZy5DRnJhbWUgPSByb290LkNGcmFtZQoKICAgIGxvY2FsIHZhcl93YjV3c2YgPSBJbnN0YW5jZS5uZXcoIkJvZHlWZWxvY2l0eSIsIHJvb3QpCiAgICBidi5NYXhGb3JjZSA9IFZlY3RvcjMubmV3KDllOSw5ZTksOWU5KQogICAgYnYuVmVsb2NpdHkgPSBWZWN0b3IzLm5ldygwLDAsMCkKCiAgICB3aGlsZSB0cHdhbGtpbmcgYW5kIGNoYXIuUGFyZW50IGFuZCBodW0uUGFyZW50IGRvCiAgICAgICAgUnVuU2VydmljZS5SZW5kZXJTdGVwcGVkOldhaXQoKQogICAgICAgIGxvY2FsIHZhcl9kNXd6OWUgPSAodG9udW1iZXIoc2VsZk9wdGlvbnMuZmx5LnBvd2VyQm94LlRleHQpIG9yIDEpKjMwIC0tIG11bHRpcGx5IHNwZWVkIGJ5IDMwIHBlciBudW1iZXIKCiAgICAgICAgbG9jYWwgdmFyX3V6d2h1YSA9IFZlY3RvcjMubmV3KGN0cmwuci1jdHJsLmwsMCxjdHJsLmYtY3RybC5iKSAtLSBjb3JyZWN0ZWQgYXhlcwogICAgICAgIGlmIG1vdmVWZWMuTWFnbml0dWRlPjAgdGhlbiBtb3ZlVmVjID0gbW92ZVZlYy5Vbml0IGVuZAoKICAgICAgICAtLSBBcHBseSBjYW1lcmEtcmVsYXRpdmUgbW92ZW1lbnQKICAgICAgICBsb2NhbCB2YXJfNm4wd24xID0gd29ya3NwYWNlLkN1cnJlbnRDYW1lcmEuQ0ZyYW1lCiAgICAgICAgbG9jYWwgdmFyX3U5Mjh0bCA9IGNhbUNGLkxvb2tWZWN0b3IKICAgICAgICBsb2NhbCB2YXJfZzZob3l2ID0gY2FtQ0YuUmlnaHRWZWN0b3IKICAgICAgICBsb2NhbCB2YXJfNWU2a3Y5ID0gKGNhbUxvb2sqbW92ZVZlYy5aICsgY2FtUmlnaHQqbW92ZVZlYy5YKSptb3ZlU3BlZWQKICAgICAgICBpZiBjdHJsLmYgKyBjdHJsLmIgKyBjdHJsLmwgKyBjdHJsLnIgPT0gMCB0aGVuCiAgICAgICAgICAgIHZlbG9jaXR5ID0gVmVjdG9yMy5uZXcoMCwwLDApCiAgICAgICAgZW5kCiAgICAgICAgYnYuVmVsb2NpdHkgPSB2ZWxvY2l0eQogICAgICAgIGJnLkNGcmFtZSA9IGNhbUNGCiAgICBlbmQKCiAgICB0cHdhbGtpbmcgPSBmYWxzZQogICAgZmx5aW5nID0gZmFsc2UKICAgIGJ2OkRlc3Ryb3koKQogICAgYmc6RGVzdHJveSgpCiAgICBodW0uUGxhdGZvcm1TdGFuZCA9IGZhbHNlCiAgICBwbHIuQ2hhcmFjdGVyLkFuaW1hdGUuRGlzYWJsZWQgPSBmYWxzZQogICAgZm9yIF8sdiBpbiBuZXh0LCBodW06R2V0UGxheWluZ0FuaW1hdGlvblRyYWNrcygpIGRvIHY6QWRqdXN0U3BlZWQoMSkgZW5kCmVuZAoKbG9jYWwgdmFyX2o3M3V5cCBzdG9wRmx5KCkKICAgIHRwd2Fsa2luZz1mYWxzZQplbmQKCi0tIEZMWSBUT0dHTEUKc2VsZk9wdGlvbnMuZmx5LnRvZ2dsZUJ0bi5Nb3VzZUJ1dHRvbjFDbGljazpDb25uZWN0KGZ1bmN0aW9uKCkKICAgIHNlbGZPcHRpb25zLmZseS5lbmFibGVkID0gbm90IHNlbGZPcHRpb25zLmZseS5lbmFibGVkCiAgICBzZWxmT3B0aW9ucy5mbHkudG9nZ2xlQnRuLkJhY2tncm91bmRDb2xvcjMgPSBzZWxmT3B0aW9ucy5mbHkuZW5hYmxlZCBhbmQgQ29sb3IzLmZyb21SR0IoNjAsMTYwLDYwKSBvciBDb2xvcjMuZnJvbVJHQigyMDAsNTAsNTApCiAgICBzZWxmT3B0aW9ucy5mbHkudG9nZ2xlQnRuLlRleHQgPSAiRmx5OiAiLi4oc2VsZk9wdGlvbnMuZmx5LmVuYWJsZWQgYW5kICJPTiIgb3IgIk9GRiIpCgogICAgaWYgc2VsZk9wdGlvbnMuZmx5LmVuYWJsZWQgYW5kIG5vdCBmbHlpbmcgdGhlbgogICAgICAgIHNwYXduKHN0YXJ0Rmx5KQogICAgZWxzZWlmIG5vdCBzZWxmT3B0aW9ucy5mbHkuZW5hYmxlZCBhbmQgZmx5aW5nIHRoZW4KICAgICAgICBzdG9wRmx5KCkKICAgIGVuZAplbmQpCgotLSBGTFkgV0FTRCBDT05UUk9MUwpVc2VySW5wdXRTZXJ2aWNlLklucHV0QmVnYW46Q29ubmVjdChmdW5jdGlvbihpbnB1dCxncCkKICAgIGlmIGdwIHRoZW4gcmV0dXJuIGVuZAogICAgaWYgaW5wdXQuS2V5Q29kZSA9PSBFbnVtLktleUNvZGUuVyB0aGVuIGN0cmwuZj0xIGVuZAogICAgaWYgaW5wdXQuS2V5Q29kZSA9PSBFbnVtLktleUNvZGUuUyB0aGVuIGN0cmwuYj0xIGVuZAogICAgaWYgaW5wdXQuS2V5Q29kZSA9PSBFbnVtLktleUNvZGUuQSB0aGVuIGN0cmwubD0tMSBlbmQKICAgIGlmIGlucHV0LktleUNvZGUgPT0gRW51bS5LZXlDb2RlLkQgdGhlbiBjdHJsLnI9MSBlbmQKZW5kKQpVc2VySW5wdXRTZXJ2aWNlLklucHV0RW5kZWQ6Q29ubmVjdChmdW5jdGlvbihpbnB1dCxncCkKICAgIGlmIGdwIHRoZW4gcmV0dXJuIGVuZAogICAgaWYgaW5wdXQuS2V5Q29kZSA9PSBFbnVtLktleUNvZGUuVyB0aGVuIGN0cmwuZj0wIGVuZAogICAgaWYgaW5wdXQuS2V5Q29kZSA9PSBFbnVtLktleUNvZGUuUyB0aGVuIGN0cmwuYj0wIGVuZAogICAgaWYgaW5wdXQuS2V5Q29kZSA9PSBFbnVtLktleUNvZGUuQSB0aGVuIGN0cmwubD0wIGVuZAogICAgaWYgaW5wdXQuS2V5Q29kZSA9PSBFbnVtLktleUNvZGUuRCB0aGVuIGN0cmwucj0wIGVuZAplbmQpCg=='))()
+-- SERVICES
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local UserInputService = game:GetService("UserInputService")
+
+local player = Players.LocalPlayer
+repeat task.wait() until player
+local playerGui = player:WaitForChild("PlayerGui")
+
+if playerGui:FindFirstChild("HitboxTroller") then
+    playerGui.HitboxTroller:Destroy()
+end
+
+-- GUI SETUP
+local gui = Instance.new("ScreenGui")
+gui.Name = "HitboxTroller"
+gui.Parent = playerGui
+gui.ResetOnSpawn = false
+
+local frame = Instance.new("Frame", gui)
+frame.Size = UDim2.fromOffset(400, 350)
+frame.Position = UDim2.fromScale(0.5,0.5)
+frame.AnchorPoint = Vector2.new(0.5,0.5)
+frame.BackgroundColor3 = Color3.fromRGB(30,30,35)
+Instance.new("UICorner", frame).CornerRadius = UDim.new(0,12)
+
+-- DRAGGING
+local dragging, dragStart, startPos
+frame.InputBegan:Connect(function(input)
+    if input.UserInputType==Enum.UserInputType.MouseButton1 then
+        dragging = true
+        dragStart = input.Position
+        startPos = frame.Position
+    end
+end)
+UserInputService.InputChanged:Connect(function(input)
+    if dragging and input.UserInputType==Enum.UserInputType.MouseMovement then
+        local delta = input.Position - dragStart
+        frame.Position = UDim2.new(startPos.X.Scale,startPos.X.Offset+delta.X,startPos.Y.Scale,startPos.Y.Offset+delta.Y)
+    end
+end)
+UserInputService.InputEnded:Connect(function(input)
+    if input.UserInputType==Enum.UserInputType.MouseButton1 then
+        dragging=false
+    end
+end)
+
+-- HEADER
+local header = Instance.new("TextLabel", frame)
+header.Size = UDim2.new(1,0,0,45)
+header.BackgroundColor3 = Color3.fromRGB(45,45,50)
+header.Text = "HitboxTroller"
+header.TextColor3 = Color3.fromRGB(255,255,255)
+header.Font = Enum.Font.GothamBold
+header.TextSize = 22
+Instance.new("UICorner", header).CornerRadius = UDim.new(0,12)
+
+local closeBtn = Instance.new("TextButton", frame)
+closeBtn.Size = UDim2.fromOffset(30,30)
+closeBtn.Position = UDim2.new(1,-36,0,7)
+closeBtn.Text = "X"
+closeBtn.BackgroundColor3 = Color3.fromRGB(200,50,50)
+Instance.new("UICorner", closeBtn)
+closeBtn.MouseButton1Click:Connect(function() gui:Destroy() end)
+
+-- SECTIONS
+local sections = {"Main","Self"}
+local activeSection = "Main"
+local sectionButtons = {}
+for i,name in ipairs(sections) do
+    local btn = Instance.new("TextButton", frame)
+    btn.Size = UDim2.fromOffset(90,28)
+    btn.Position = UDim2.fromOffset(10+(i-1)*100,55)
+    btn.Text = name
+    btn.Font = Enum.Font.Gotham
+    btn.TextSize = 16
+    btn.BackgroundColor3 = Color3.fromRGB(70,70,75)
+    Instance.new("UICorner", btn)
+    btn.MouseButton1Click:Connect(function()
+        activeSection=name
+        for _,b in pairs(sectionButtons) do b.BackgroundColor3=Color3.fromRGB(70,70,75) end
+        btn.BackgroundColor3=Color3.fromRGB(60,160,60)
+        for _,v in pairs(frame:GetChildren()) do
+            if v:IsA("Frame") and v:FindFirstChild("SectionTag") then
+                v.Visible = (v.SectionTag.Value==activeSection)
+            end
+        end
+    end)
+    sectionButtons[i]=btn
+end
+sectionButtons[1].BackgroundColor3=Color3.fromRGB(60,160,60)
+
+-- MAIN SECTION
+local mainFrame = Instance.new("Frame", frame)
+mainFrame.Size = UDim2.fromOffset(380,250)
+mainFrame.Position = UDim2.fromOffset(10,90)
+mainFrame.BackgroundTransparency = 1
+local tag = Instance.new("StringValue", mainFrame)
+tag.Name = "SectionTag"
+tag.Value = "Main"
+mainFrame.Visible = true
+
+-- HITBOX VARIABLES
+local hitboxEnabled=false
+local hitboxSize=4
+local hitboxVisual=false
+local hitboxData={}
+
+-- HITBOX UI
+local hitboxToggle = Instance.new("TextButton",mainFrame)
+hitboxToggle.Position = UDim2.fromOffset(10,10)
+hitboxToggle.Size = UDim2.fromOffset(140,35)
+hitboxToggle.Text="Hitbox: OFF"
+hitboxToggle.BackgroundColor3=Color3.fromRGB(200,50,50)
+Instance.new("UICorner",hitboxToggle).CornerRadius=UDim.new(0,6)
+
+local hitboxInput = Instance.new("TextBox",mainFrame)
+hitboxInput.Position = UDim2.fromOffset(160,10)
+hitboxInput.Size = UDim2.fromOffset(60,35)
+hitboxInput.Text=tostring(hitboxSize)
+hitboxInput.ClearTextOnFocus=false
+hitboxInput.BackgroundColor3 = Color3.fromRGB(50,50,55)
+hitboxInput.TextColor3 = Color3.fromRGB(255,255,255)
+Instance.new("UICorner",hitboxInput).CornerRadius = UDim.new(0,6)
+
+local visualToggle = Instance.new("TextButton",mainFrame)
+visualToggle.Position = UDim2.fromOffset(230,10)
+visualToggle.Size = UDim2.fromOffset(140,35)
+visualToggle.Text="Visualizer: OFF"
+visualToggle.BackgroundColor3=Color3.fromRGB(200,50,50)
+Instance.new("UICorner",visualToggle).CornerRadius=UDim.new(0,6)
+
+-- HITBOX FUNCTIONS
+local function applyHitbox(plr)
+    if not hitboxEnabled or plr==player then return end
+    local char = plr.Character
+    if not char then return end
+    local hrp = char:FindFirstChild("HumanoidRootPart")
+    if not hrp then return end
+    if hitboxData[plr] then
+        if hitboxData[plr].conn then hitboxData[plr].conn:Disconnect() end
+        if hitboxData[plr].viz then hitboxData[plr].viz:Destroy() end
+        if hitboxData[plr].billboard then hitboxData[plr].billboard:Destroy() end
+    end
+    local viz
+    local billboard
+    if hitboxVisual then
+        -- Neon part
+        viz = Instance.new("Part",workspace)
+        viz.Anchored=true
+        viz.CanCollide=false
+        viz.Transparency=0.3
+        viz.Color=Color3.fromRGB(255,0,0)
+        viz.Material = Enum.Material.Neon
+        viz.CastShadow = false
+
+        -- BillboardGui for always visible
+        billboard = Instance.new("BillboardGui", hrp)
+        billboard.Size = UDim2.new(0,100,0,100)
+        billboard.AlwaysOnTop = true
+        billboard.ResetOnSpawn = false
+        local bbFrame = Instance.new("Frame", billboard)
+        bbFrame.Size = UDim2.fromScale(1,1)
+        bbFrame.BackgroundColor3 = Color3.fromRGB(255,0,0)
+        bbFrame.BackgroundTransparency = 0.3
+        bbFrame.BorderSizePixel = 0
+    end
+    local conn
+    conn = RunService.RenderStepped:Connect(function()
+        if not hrp.Parent then
+            if viz then viz:Destroy() end
+            if billboard then billboard:Destroy() end
+            conn:Disconnect()
+            return
+        end
+        hrp.Size=Vector3.new(hitboxSize,hitboxSize,hitboxSize)
+        hrp.CanCollide=false
+        if viz then viz.CFrame=hrp.CFrame viz.Size=hrp.Size end
+    end)
+    hitboxData[plr]={conn=conn,viz=viz,billboard=billboard}
+end
+
+local function reapplyHitboxes()
+    for _,v in pairs(hitboxData) do
+        if v.conn then v.conn:Disconnect() end
+        if v.viz then v.viz:Destroy() end
+        if v.billboard then v.billboard:Destroy() end
+    end
+    hitboxData={}
+    for _,p in pairs(Players:GetPlayers()) do applyHitbox(p) end
+end
+
+hitboxToggle.MouseButton1Click:Connect(function()
+    hitboxEnabled=not hitboxEnabled
+    hitboxToggle.Text="Hitbox: "..(hitboxEnabled and "ON" or "OFF")
+    hitboxToggle.BackgroundColor3=hitboxEnabled and Color3.fromRGB(60,160,60) or Color3.fromRGB(200,50,50)
+    reapplyHitboxes()
+end)
+hitboxInput.FocusLost:Connect(function()
+    local val=tonumber(hitboxInput.Text)
+    if val then hitboxSize=val reapplyHitboxes() end
+end)
+visualToggle.MouseButton1Click:Connect(function()
+    hitboxVisual=not hitboxVisual
+    visualToggle.Text="Visualizer: "..(hitboxVisual and "ON" or "OFF")
+    visualToggle.BackgroundColor3=hitboxVisual and Color3.fromRGB(60,160,60) or Color3.fromRGB(200,50,50)
+    reapplyHitboxes()
+end)
+
+Players.PlayerAdded:Connect(function(p)
+    p.CharacterAdded:Connect(function() task.wait(0.1) applyHitbox(p) end)
+end)
+for _,p in pairs(Players:GetPlayers()) do
+    p.CharacterAdded:Connect(function() task.wait(0.1) applyHitbox(p) end)
+end
+
+-- SELF SECTION
+local selfFrame = Instance.new("Frame",frame)
+selfFrame.Size=UDim2.fromOffset(380,250)
+selfFrame.Position=UDim2.fromOffset(10,90)
+selfFrame.BackgroundTransparency = 1
+local tag2=Instance.new("StringValue",selfFrame)
+tag2.Name="SectionTag"
+tag2.Value="Self"
+selfFrame.Visible = false
+
+local selfOptions={
+    speed={value=16,enabled=false,key=Enum.KeyCode.T},
+    jump={value=50,enabled=false,key=Enum.KeyCode.Y},
+    fly={value=1,enabled=false,key=Enum.KeyCode.U} -- DEFAULT FLY SPEED = 1
+}
+
+local yStart=10
+for name,opt in pairs(selfOptions) do
+    local toggle = Instance.new("TextButton",selfFrame)
+    toggle.Position = UDim2.fromOffset(10,yStart)
+    toggle.Size = UDim2.fromOffset(140,35)
+    toggle.Text = name:sub(1,1):upper()..name:sub(2)..": OFF"
+    toggle.BackgroundColor3 = Color3.fromRGB(200,50,50)
+    Instance.new("UICorner", toggle).CornerRadius = UDim.new(0,6)
+    opt.toggleBtn = toggle
+
+    local keyBtn = Instance.new("TextButton",selfFrame)
+    keyBtn.Position = UDim2.fromOffset(160,yStart)
+    keyBtn.Size = UDim2.fromOffset(60,35)
+    keyBtn.Text = opt.key.Name
+    keyBtn.BackgroundColor3 = Color3.fromRGB(70,70,70)
+    Instance.new("UICorner", keyBtn).CornerRadius = UDim.new(0,6)
+    opt.keyBtn = keyBtn
+
+    local powerBox = Instance.new("TextBox",selfFrame)
+    powerBox.Position = UDim2.fromOffset(230,yStart)
+    powerBox.Size = UDim2.fromOffset(60,35)
+    powerBox.Text = tostring(opt.value)
+    powerBox.ClearTextOnFocus=false
+    powerBox.BackgroundColor3 = Color3.fromRGB(50,50,55)
+    powerBox.TextColor3 = Color3.fromRGB(255,255,255)
+    Instance.new("UICorner", powerBox).CornerRadius=UDim.new(0,6)
+    opt.powerBox = powerBox
+
+    yStart=yStart+45
+end
+
+local function updateBtn(btn,state)
+    btn.BackgroundColor3 = state and Color3.fromRGB(60,160,60) or Color3.fromRGB(200,50,50)
+
+    if state then
+        btn.Text = btn.Text:gsub("OFF","ON")
+    else
+        btn.Text = btn.Text:gsub("ON","OFF")
+    end
+end
+
+
+for _,opt in pairs(selfOptions) do
+    opt.toggleBtn.MouseButton1Click:Connect(function()
+        opt.enabled = not opt.enabled
+        updateBtn(opt.toggleBtn,opt.enabled)
+    end)
+    opt.powerBox.FocusLost:Connect(function()
+        local val=tonumber(opt.powerBox.Text)
+        if val then opt.value=val end
+    end)
+end
+
+UserInputService.InputBegan:Connect(function(input,gp)
+    if gp then return end
+    for _,opt in pairs(selfOptions) do
+        if input.KeyCode==opt.key then
+            opt.enabled = not opt.enabled
+            updateBtn(opt.toggleBtn,opt.enabled)
+        end
+    end
+end)
+
+-- SPEED & JUMP APPLY LOOP
+RunService.RenderStepped:Connect(function()
+    local char = player.Character
+    if not char then return end
+
+    local hum = char:FindFirstChildWhichIsA("Humanoid")
+    if not hum then return end
+
+    -- SPEED
+    if selfOptions.speed.enabled then
+        hum.WalkSpeed = tonumber(selfOptions.speed.powerBox.Text) or selfOptions.speed.value
+    else
+        hum.WalkSpeed = 16
+    end
+
+    -- JUMP
+    if selfOptions.jump.enabled then
+        hum.JumpPower = tonumber(selfOptions.jump.powerBox.Text) or selfOptions.jump.value
+        hum.UseJumpPower = true
+    else
+        hum.JumpPower = 50
+        hum.UseJumpPower = true
+    end
+end)
+
+-- === FLY SCRIPT INTEGRATED (FIXED W/S + A/D + HOVER) ===
+local flying = false
+local tpwalking = false
+local ctrl = {f=0,b=0,l=0,r=0}
+
+local function startFly()
+    local plr = Players.LocalPlayer
+    local char = plr.Character
+    if not char then return end
+    local hum = char:FindFirstChildWhichIsA("Humanoid")
+    local root = char:FindFirstChild("HumanoidRootPart") or char:FindFirstChild("Torso") or char:FindFirstChild("UpperTorso")
+    if not hum or not root then return end
+
+    plr.Character.Animate.Disabled = true
+    for _,v in next, hum:GetPlayingAnimationTracks() do v:AdjustSpeed(0) end
+
+    hum.PlatformStand = true
+    flying = true
+    tpwalking = true
+
+    local bg = Instance.new("BodyGyro", root)
+    bg.P = 9e4
+    bg.MaxTorque = Vector3.new(9e9,9e9,9e9)
+    bg.CFrame = root.CFrame
+
+    local bv = Instance.new("BodyVelocity", root)
+    bv.MaxForce = Vector3.new(9e9,9e9,9e9)
+    bv.Velocity = Vector3.new(0,0,0)
+
+    while tpwalking and char.Parent and hum.Parent do
+        RunService.RenderStepped:Wait()
+        local moveSpeed = (tonumber(selfOptions.fly.powerBox.Text) or 1)*30 -- multiply speed by 30 per number
+
+        local moveVec = Vector3.new(ctrl.r-ctrl.l,0,ctrl.f-ctrl.b) -- corrected axes
+        if moveVec.Magnitude>0 then moveVec = moveVec.Unit end
+
+        -- Apply camera-relative movement
+        local camCF = workspace.CurrentCamera.CFrame
+        local camLook = camCF.LookVector
+        local camRight = camCF.RightVector
+        local velocity = (camLook*moveVec.Z + camRight*moveVec.X)*moveSpeed
+        if ctrl.f + ctrl.b + ctrl.l + ctrl.r == 0 then
+            velocity = Vector3.new(0,0,0)
+        end
+        bv.Velocity = velocity
+        bg.CFrame = camCF
+    end
+
+    tpwalking = false
+    flying = false
+    bv:Destroy()
+    bg:Destroy()
+    hum.PlatformStand = false
+    plr.Character.Animate.Disabled = false
+    for _,v in next, hum:GetPlayingAnimationTracks() do v:AdjustSpeed(1) end
+end
+
+local function stopFly()
+    tpwalking=false
+end
+
+-- FLY TOGGLE
+selfOptions.fly.toggleBtn.MouseButton1Click:Connect(function()
+    selfOptions.fly.enabled = not selfOptions.fly.enabled
+    selfOptions.fly.toggleBtn.BackgroundColor3 = selfOptions.fly.enabled and Color3.fromRGB(60,160,60) or Color3.fromRGB(200,50,50)
+    selfOptions.fly.toggleBtn.Text = "Fly: "..(selfOptions.fly.enabled and "ON" or "OFF")
+
+    if selfOptions.fly.enabled and not flying then
+        spawn(startFly)
+    elseif not selfOptions.fly.enabled and flying then
+        stopFly()
+    end
+end)
+
+-- FLY WASD CONTROLS
+UserInputService.InputBegan:Connect(function(input,gp)
+    if gp then return end
+    if input.KeyCode == Enum.KeyCode.W then ctrl.f=1 end
+    if input.KeyCode == Enum.KeyCode.S then ctrl.b=1 end
+    if input.KeyCode == Enum.KeyCode.A then ctrl.l=-1 end
+    if input.KeyCode == Enum.KeyCode.D then ctrl.r=1 end
+end)
+UserInputService.InputEnded:Connect(function(input,gp)
+    if gp then return end
+    if input.KeyCode == Enum.KeyCode.W then ctrl.f=0 end
+    if input.KeyCode == Enum.KeyCode.S then ctrl.b=0 end
+    if input.KeyCode == Enum.KeyCode.A then ctrl.l=0 end
+    if input.KeyCode == Enum.KeyCode.D then ctrl.r=0 end
+end)
