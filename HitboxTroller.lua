@@ -128,7 +128,7 @@ visualToggle.Position = UDim2.fromOffset(230,10)
 visualToggle.Size = UDim2.fromOffset(140,35)
 visualToggle.Text="Visualizer: OFF"
 visualToggle.BackgroundColor3=Color3.fromRGB(200,50,50)
-Instance.new("UICorner",visualToggle).CornerRadius = UDim.new(0,6)
+Instance.new("UICorner",visualToggle).CornerRadius=UDim.new(0,6)
 
 -- HITBOX FUNCTIONS
 local function applyHitbox(plr)
@@ -225,7 +225,7 @@ selfFrame.Visible = false
 local selfOptions={
     speed={value=16,enabled=false,key=Enum.KeyCode.T},
     jump={value=50,enabled=false,key=Enum.KeyCode.Y},
-    fly={value=1,enabled=false,key=Enum.KeyCode.U} -- DEFAULT FLY SPEED = 1
+    fly={value=1,enabled=false,key=Enum.KeyCode.U}
 }
 
 local yStart=10
@@ -261,7 +261,6 @@ end
 
 local function updateBtn(btn,state)
     btn.BackgroundColor3 = state and Color3.fromRGB(60,160,60) or Color3.fromRGB(200,50,50)
-
     if state then
         btn.Text = btn.Text:gsub("OFF","ON")
     else
@@ -269,24 +268,29 @@ local function updateBtn(btn,state)
     end
 end
 
+-- CENTRALIZED TOGGLE FUNCTION
+local function toggleOption(opt)
+    opt.enabled = not opt.enabled
+    updateBtn(opt.toggleBtn, opt.enabled)
+end
 
+-- CONNECT GUI BUTTONS
 for _,opt in pairs(selfOptions) do
     opt.toggleBtn.MouseButton1Click:Connect(function()
-        opt.enabled = not opt.enabled
-        updateBtn(opt.toggleBtn,opt.enabled)
+        toggleOption(opt)
     end)
     opt.powerBox.FocusLost:Connect(function()
-        local val=tonumber(opt.powerBox.Text)
-        if val then opt.value=val end
+        local val = tonumber(opt.powerBox.Text)
+        if val then opt.value = val end
     end)
 end
 
-UserInputService.InputBegan:Connect(function(input,gp)
+-- CONNECT KEYBOARD SHORTCUTS
+UserInputService.InputBegan:Connect(function(input, gp)
     if gp then return end
     for _,opt in pairs(selfOptions) do
-        if input.KeyCode==opt.key then
-            opt.enabled = not opt.enabled
-            updateBtn(opt.toggleBtn,opt.enabled)
+        if input.KeyCode == opt.key then
+            toggleOption(opt)
         end
     end
 end)
@@ -299,14 +303,12 @@ RunService.RenderStepped:Connect(function()
     local hum = char:FindFirstChildWhichIsA("Humanoid")
     if not hum then return end
 
-    -- SPEED
     if selfOptions.speed.enabled then
         hum.WalkSpeed = tonumber(selfOptions.speed.powerBox.Text) or selfOptions.speed.value
     else
         hum.WalkSpeed = 16
     end
 
-    -- JUMP
     if selfOptions.jump.enabled then
         hum.JumpPower = tonumber(selfOptions.jump.powerBox.Text) or selfOptions.jump.value
         hum.UseJumpPower = true
@@ -316,7 +318,7 @@ RunService.RenderStepped:Connect(function()
     end
 end)
 
--- === FLY SCRIPT INTEGRATED (FIXED CAMERA-RELATIVE) ===
+-- === FLY SCRIPT (FIXED MOVEMENT) ===
 local flying = false
 local tpwalking = false
 local ctrl = {f=0,b=0,l=0,r=0}
@@ -349,16 +351,16 @@ local function startFly()
         RunService.RenderStepped:Wait()
         local moveSpeed = (tonumber(selfOptions.fly.powerBox.Text) or 1)*30
 
-        -- Fixed camera-relative movement with Y movement
-        local moveVec = Vector3.new(ctrl.r-ctrl.l,0,ctrl.f-ctrl.b)
+        local moveVec = Vector3.new(ctrl.r - ctrl.l, 0, ctrl.f - ctrl.b)
         if moveVec.Magnitude>0 then moveVec = moveVec.Unit end
 
         local camCF = workspace.CurrentCamera.CFrame
-        local camLook = camCF.LookVector.Unit
-        local camRight = camCF.RightVector.Unit
-
-        -- velocity includes camera tilt for forward/back
+        local camLook = camCF.LookVector
+        local camRight = camCF.RightVector
         local velocity = (camLook*moveVec.Z + camRight*moveVec.X)*moveSpeed
+        if ctrl.f + ctrl.b + ctrl.l + ctrl.r == 0 then
+            velocity = Vector3.new(0,0,0)
+        end
         bv.Velocity = velocity
         bg.CFrame = camCF
     end
@@ -378,10 +380,7 @@ end
 
 -- FLY TOGGLE
 selfOptions.fly.toggleBtn.MouseButton1Click:Connect(function()
-    selfOptions.fly.enabled = not selfOptions.fly.enabled
-    selfOptions.fly.toggleBtn.BackgroundColor3 = selfOptions.fly.enabled and Color3.fromRGB(60,160,60) or Color3.fromRGB(200,50,50)
-    selfOptions.fly.toggleBtn.Text = "Fly: "..(selfOptions.fly.enabled and "ON" or "OFF")
-
+    toggleOption(selfOptions.fly)
     if selfOptions.fly.enabled and not flying then
         spawn(startFly)
     elseif not selfOptions.fly.enabled and flying then
@@ -394,7 +393,7 @@ UserInputService.InputBegan:Connect(function(input,gp)
     if gp then return end
     if input.KeyCode == Enum.KeyCode.W then ctrl.f=1 end
     if input.KeyCode == Enum.KeyCode.S then ctrl.b=1 end
-    if input.KeyCode == Enum.KeyCode.A then ctrl.l=-1 end
+    if input.KeyCode == Enum.KeyCode.A then ctrl.l=1 end
     if input.KeyCode == Enum.KeyCode.D then ctrl.r=1 end
 end)
 UserInputService.InputEnded:Connect(function(input,gp)
