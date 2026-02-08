@@ -145,7 +145,6 @@ local function applyHitbox(plr)
     local viz
     local billboard
     if hitboxVisual then
-        -- Neon part
         viz = Instance.new("Part",workspace)
         viz.Anchored=true
         viz.CanCollide=false
@@ -154,7 +153,6 @@ local function applyHitbox(plr)
         viz.Material = Enum.Material.Neon
         viz.CastShadow = false
 
-        -- BillboardGui for always visible
         billboard = Instance.new("BillboardGui", hrp)
         billboard.Size = UDim2.new(0,100,0,100)
         billboard.AlwaysOnTop = true
@@ -227,7 +225,7 @@ selfFrame.Visible = false
 local selfOptions={
     speed={value=16,enabled=false,key=Enum.KeyCode.T},
     jump={value=50,enabled=false,key=Enum.KeyCode.Y},
-    fly={value=1,enabled=false,key=Enum.KeyCode.U} -- DEFAULT FLY SPEED = 1
+    fly={value=1,enabled=false,key=Enum.KeyCode.U}
 }
 
 local yStart=10
@@ -263,14 +261,12 @@ end
 
 local function updateBtn(btn,state)
     btn.BackgroundColor3 = state and Color3.fromRGB(60,160,60) or Color3.fromRGB(200,50,50)
-
     if state then
         btn.Text = btn.Text:gsub("OFF","ON")
     else
         btn.Text = btn.Text:gsub("ON","OFF")
     end
 end
-
 
 for _,opt in pairs(selfOptions) do
     opt.toggleBtn.MouseButton1Click:Connect(function()
@@ -301,14 +297,12 @@ RunService.RenderStepped:Connect(function()
     local hum = char:FindFirstChildWhichIsA("Humanoid")
     if not hum then return end
 
-    -- SPEED
     if selfOptions.speed.enabled then
         hum.WalkSpeed = tonumber(selfOptions.speed.powerBox.Text) or selfOptions.speed.value
     else
         hum.WalkSpeed = 16
     end
 
-    -- JUMP
     if selfOptions.jump.enabled then
         hum.JumpPower = tonumber(selfOptions.jump.powerBox.Text) or selfOptions.jump.value
         hum.UseJumpPower = true
@@ -349,12 +343,12 @@ local function startFly()
 
     while tpwalking and char.Parent and hum.Parent do
         RunService.RenderStepped:Wait()
-        local moveSpeed = (tonumber(selfOptions.fly.powerBox.Text) or 1)*30 -- multiply speed by 30 per number
+        local moveSpeed = (tonumber(selfOptions.fly.powerBox.Text) or 1)*30
 
-        local moveVec = Vector3.new(ctrl.r-ctrl.l,0,ctrl.f-ctrl.b) -- corrected axes
+        -- FIXED LEFT/RIGHT MOVEMENT
+        local moveVec = Vector3.new(ctrl.r - ctrl.l, 0, ctrl.f - ctrl.b)
         if moveVec.Magnitude>0 then moveVec = moveVec.Unit end
 
-        -- Apply camera-relative movement
         local camCF = workspace.CurrentCamera.CFrame
         local camLook = camCF.LookVector
         local camRight = camCF.RightVector
@@ -392,12 +386,12 @@ selfOptions.fly.toggleBtn.MouseButton1Click:Connect(function()
     end
 end)
 
--- FLY WASD CONTROLS
+-- FLY WASD CONTROLS (FIXED)
 UserInputService.InputBegan:Connect(function(input,gp)
     if gp then return end
     if input.KeyCode == Enum.KeyCode.W then ctrl.f=1 end
     if input.KeyCode == Enum.KeyCode.S then ctrl.b=1 end
-    if input.KeyCode == Enum.KeyCode.A then ctrl.l=-1 end
+    if input.KeyCode == Enum.KeyCode.A then ctrl.l=1 end
     if input.KeyCode == Enum.KeyCode.D then ctrl.r=1 end
 end)
 UserInputService.InputEnded:Connect(function(input,gp)
