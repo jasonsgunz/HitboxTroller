@@ -214,18 +214,18 @@ end
 
 -- SELF SECTION
 local selfFrame = Instance.new("Frame",frame)
-selfFrame.Size = UDim2.fromOffset(380,250)
-selfFrame.Position = UDim2.fromOffset(10,90)
+selfFrame.Size=UDim2.fromOffset(380,250)
+selfFrame.Position=UDim2.fromOffset(10,90)
 selfFrame.BackgroundTransparency = 1
 local tag2=Instance.new("StringValue",selfFrame)
 tag2.Name="SectionTag"
-tag2.Value = "Self"
+tag2.Value="Self"
 selfFrame.Visible = false
 
 local selfOptions={
     speed={value=16,enabled=false,key=Enum.KeyCode.T},
     jump={value=50,enabled=false,key=Enum.KeyCode.Y},
-    fly={value=1,enabled=false,key=Enum.KeyCode.U}
+    fly={value=1,enabled=false,key=Enum.KeyCode.U} -- DEFAULT FLY SPEED = 1
 }
 
 local yStart=10
@@ -256,12 +256,12 @@ for name,opt in pairs(selfOptions) do
     Instance.new("UICorner", powerBox).CornerRadius=UDim.new(0,6)
     opt.powerBox = powerBox
 
-    yStart = yStart + 45
+    yStart=yStart+45
 end
 
--- UPDATE BUTTON TEXT AND COLOR
 local function updateBtn(btn,state)
     btn.BackgroundColor3 = state and Color3.fromRGB(60,160,60) or Color3.fromRGB(200,50,50)
+
     if state then
         btn.Text = btn.Text:gsub("OFF","ON")
     else
@@ -269,19 +269,44 @@ local function updateBtn(btn,state)
     end
 end
 
+
+for _,opt in pairs(selfOptions) do
+    opt.toggleBtn.MouseButton1Click:Connect(function()
+        opt.enabled = not opt.enabled
+        updateBtn(opt.toggleBtn,opt.enabled)
+    end)
+    opt.powerBox.FocusLost:Connect(function()
+        local val=tonumber(opt.powerBox.Text)
+        if val then opt.value=val end
+    end)
+end
+
+UserInputService.InputBegan:Connect(function(input,gp)
+    if gp then return end
+    for _,opt in pairs(selfOptions) do
+        if input.KeyCode==opt.key then
+            opt.enabled = not opt.enabled
+            updateBtn(opt.toggleBtn,opt.enabled)
+        end
+    end
+end)
+
 -- SPEED & JUMP APPLY LOOP
 RunService.RenderStepped:Connect(function()
     local char = player.Character
     if not char then return end
+
     local hum = char:FindFirstChildWhichIsA("Humanoid")
     if not hum then return end
 
+    -- SPEED
     if selfOptions.speed.enabled then
         hum.WalkSpeed = tonumber(selfOptions.speed.powerBox.Text) or selfOptions.speed.value
     else
         hum.WalkSpeed = 16
     end
 
+    -- JUMP
     if selfOptions.jump.enabled then
         hum.JumpPower = tonumber(selfOptions.jump.powerBox.Text) or selfOptions.jump.value
         hum.UseJumpPower = true
@@ -291,22 +316,25 @@ RunService.RenderStepped:Connect(function()
     end
 end)
 
--- === FLY SCRIPT (FULL 3D CAMERA RELATIVE) ===
+-- === FLY SCRIPT INTEGRATED (FIXED CAMERA-RELATIVE) ===
 local flying = false
+local tpwalking = false
 local ctrl = {f=0,b=0,l=0,r=0}
 
 local function startFly()
-    if flying then return end
-    local char = player.Character
+    local plr = Players.LocalPlayer
+    local char = plr.Character
     if not char then return end
     local hum = char:FindFirstChildWhichIsA("Humanoid")
     local root = char:FindFirstChild("HumanoidRootPart") or char:FindFirstChild("Torso") or char:FindFirstChild("UpperTorso")
     if not hum or not root then return end
 
-    flying = true
-    hum.PlatformStand = true
-    player.Character.Animate.Disabled = true
+    plr.Character.Animate.Disabled = true
     for _,v in next, hum:GetPlayingAnimationTracks() do v:AdjustSpeed(0) end
+
+    hum.PlatformStand = true
+    flying = true
+    tpwalking = true
 
     local bg = Instance.new("BodyGyro", root)
     bg.P = 9e4
@@ -317,55 +345,62 @@ local function startFly()
     bv.MaxForce = Vector3.new(9e9,9e9,9e9)
     bv.Velocity = Vector3.new(0,0,0)
 
-    RunService.RenderStepped:Connect(function()
-        if not flying then
-            bv.Velocity = Vector3.new(0,0,0)
-            return
-        end
+    while tpwalking and char.Parent and hum.Parent do
+        RunService.RenderStepped:Wait()
+        local moveSpeed = (tonumber(selfOptions.fly.powerBox.Text) or 1)*30
 
-        local moveSpeed = (tonumber(selfOptions.fly.powerBox.Text) or 1) * 30
-        local moveVec = Vector3.new(ctrl.l + ctrl.r, 0, ctrl.f + ctrl.b)
-        if moveVec.Magnitude > 0 then moveVec = moveVec.Unit end
+        -- Fixed camera-relative movement with Y movement
+        local moveVec = Vector3.new(ctrl.r-ctrl.l,0,ctrl.f-ctrl.b)
+        if moveVec.Magnitude>0 then moveVec = moveVec.Unit end
 
         local camCF = workspace.CurrentCamera.CFrame
-        local camLook = camCF.LookVector.Unit -- FULL 3D
-        local camRight = camCF.RightVector.Unit -- FULL 3D
+        local camLook = camCF.LookVector.Unit
+        local camRight = camCF.RightVector.Unit
 
-        local velocity = (camLook * moveVec.Z + camRight * moveVec.X) * moveSpeed
+        -- velocity includes camera tilt for forward/back
+        local velocity = (camLook*moveVec.Z + camRight*moveVec.X)*moveSpeed
         bv.Velocity = velocity
         bg.CFrame = camCF
-    end)
+    end
+
+    tpwalking = false
+    flying = false
+    bv:Destroy()
+    bg:Destroy()
+    hum.PlatformStand = false
+    plr.Character.Animate.Disabled = false
+    for _,v in next, hum:GetPlayingAnimationTracks() do v:AdjustSpeed(1) end
+end
+
+local function stopFly()
+    tpwalking=false
 end
 
 -- FLY TOGGLE
-local function toggleFly()
+selfOptions.fly.toggleBtn.MouseButton1Click:Connect(function()
     selfOptions.fly.enabled = not selfOptions.fly.enabled
-    updateBtn(selfOptions.fly.toggleBtn,selfOptions.fly.enabled)
-    if selfOptions.fly.enabled then
-        startFly()
-    end
-end
+    selfOptions.fly.toggleBtn.BackgroundColor3 = selfOptions.fly.enabled and Color3.fromRGB(60,160,60) or Color3.fromRGB(200,50,50)
+    selfOptions.fly.toggleBtn.Text = "Fly: "..(selfOptions.fly.enabled and "ON" or "OFF")
 
-selfOptions.fly.toggleBtn.MouseButton1Click:Connect(toggleFly)
-UserInputService.InputBegan:Connect(function(input,gp)
-    if gp then return end
-    if input.KeyCode == selfOptions.fly.key then
-        toggleFly()
+    if selfOptions.fly.enabled and not flying then
+        spawn(startFly)
+    elseif not selfOptions.fly.enabled and flying then
+        stopFly()
     end
 end)
 
 -- FLY WASD CONTROLS
 UserInputService.InputBegan:Connect(function(input,gp)
     if gp then return end
-    if input.KeyCode == Enum.KeyCode.W then ctrl.f = 1 end
-    if input.KeyCode == Enum.KeyCode.S then ctrl.b = -1 end
-    if input.KeyCode == Enum.KeyCode.A then ctrl.l = -1 end
-    if input.KeyCode == Enum.KeyCode.D then ctrl.r = 1 end
+    if input.KeyCode == Enum.KeyCode.W then ctrl.f=1 end
+    if input.KeyCode == Enum.KeyCode.S then ctrl.b=1 end
+    if input.KeyCode == Enum.KeyCode.A then ctrl.l=-1 end
+    if input.KeyCode == Enum.KeyCode.D then ctrl.r=1 end
 end)
 UserInputService.InputEnded:Connect(function(input,gp)
     if gp then return end
-    if input.KeyCode == Enum.KeyCode.W then ctrl.f = 0 end
-    if input.KeyCode == Enum.KeyCode.S then ctrl.b = 0 end
-    if input.KeyCode == Enum.KeyCode.A then ctrl.l = 0 end
-    if input.KeyCode == Enum.KeyCode.D then ctrl.r = 0 end
+    if input.KeyCode == Enum.KeyCode.W then ctrl.f=0 end
+    if input.KeyCode == Enum.KeyCode.S then ctrl.b=0 end
+    if input.KeyCode == Enum.KeyCode.A then ctrl.l=0 end
+    if input.KeyCode == Enum.KeyCode.D then ctrl.r=0 end
 end)
