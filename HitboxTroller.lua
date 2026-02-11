@@ -238,25 +238,35 @@ if not hrp then return end
     end
     local viz
     local billboard
-    if hitboxVisual then
-        viz = Instance.new("Part",workspace)
-        viz.Anchored=true
-        viz.CanCollide=false
-        viz.Transparency=0.3
-        viz.Color=Color3.fromRGB(255,0,0)
-        viz.Material = Enum.Material.Neon
-        viz.CastShadow = false
+  local viz
+local billboard
 
-        billboard = Instance.new("BillboardGui", hrp)
-        billboard.Size = UDim2.new(0,100,0,100)
-        billboard.AlwaysOnTop = true
-        billboard.ResetOnSpawn = false
-        local bbFrame = Instance.new("Frame", billboard)
-        bbFrame.Size = UDim2.fromScale(1,1)
-        bbFrame.BackgroundColor3 = Color3.fromRGB(255,0,0)
-        bbFrame.BackgroundTransparency = 0.3
-        bbFrame.BorderSizePixel = 0
-    end
+-- RED BOX VISUAL
+if hitboxVisual then
+    viz = Instance.new("Part", workspace)
+    viz.Anchored = true
+    viz.CanCollide = false
+    viz.Transparency = 0.3
+    viz.Color = Color3.fromRGB(255,0,0)
+    viz.Material = Enum.Material.Neon
+    viz.CastShadow = false
+end
+
+-- BILLBOARD ESP
+if hitboxBillboard then
+    billboard = Instance.new("BillboardGui")
+    billboard.Parent = hrp
+    billboard.Size = UDim2.new(0,100,0,100)
+    billboard.AlwaysOnTop = true
+    billboard.ResetOnSpawn = false
+
+    local bbFrame = Instance.new("Frame", billboard)
+    bbFrame.Size = UDim2.fromScale(1,1)
+    bbFrame.BackgroundColor3 = Color3.fromRGB(255,0,0)
+    bbFrame.BackgroundTransparency = 0.3
+    bbFrame.BorderSizePixel = 0
+end
+
     local conn
     conn = RunService.RenderStepped:Connect(function()
         if not hrp.Parent then
