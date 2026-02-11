@@ -508,3 +508,12 @@ UserInputService.InputEnded:Connect(function(input,gp)
     if input.KeyCode == Enum.KeyCode.A then ctrl.l=0 end
     if input.KeyCode == Enum.KeyCode.D then ctrl.r=0 end
 end)
+
+local StarterGui = game:GetService("StarterGui")
+
+StarterGui:SetCore("SendNotification", {
+    Title = "LOADED!",
+    Text = "Script made by jasonsgunz on Github",
+    Icon = "rbxassetid://6031091002", 
+    Duration = 4
+})
