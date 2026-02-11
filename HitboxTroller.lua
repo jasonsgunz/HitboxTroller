@@ -104,6 +104,7 @@ mainFrame.Visible = true
 local hitboxEnabled=false
 local hitboxSize=4
 local hitboxVisual=false
+local hitboxCollision=false
 local hitboxData={}
 
 -- HITBOX UI
@@ -130,6 +131,20 @@ visualToggle.Text="Visualizer: OFF"
 visualToggle.BackgroundColor3=Color3.fromRGB(200,50,50)
 Instance.new("UICorner",visualToggle).CornerRadius=UDim.new(0,6)
 
+-- COLLISION TOGGLE
+local collisionToggle = Instance.new("TextButton",mainFrame)
+collisionToggle.Position = UDim2.fromOffset(10,55)
+collisionToggle.Size = UDim2.fromOffset(140,35)
+collisionToggle.Text="Collision: OFF"
+collisionToggle.BackgroundColor3=Color3.fromRGB(200,50,50)
+Instance.new("UICorner",collisionToggle).CornerRadius=UDim.new(0,6)
+
+collisionToggle.MouseButton1Click:Connect(function()
+    hitboxCollision = not hitboxCollision
+    collisionToggle.Text="Collision: "..(hitboxCollision and "ON" or "OFF")
+    collisionToggle.BackgroundColor3=hitboxCollision and Color3.fromRGB(60,160,60) or Color3.fromRGB(200,50,50)
+end)
+
 -- HITBOX FUNCTIONS
 local function applyHitbox(plr)
     if not hitboxEnabled or plr==player then return end
@@ -137,52 +152,19 @@ local function applyHitbox(plr)
     if not char then return end
     local hrp = char:FindFirstChild("HumanoidRootPart")
     if not hrp then return end
-    if hitboxData[plr] then
-        if hitboxData[plr].conn then hitboxData[plr].conn:Disconnect() end
-        if hitboxData[plr].viz then hitboxData[plr].viz:Destroy() end
-        if hitboxData[plr].billboard then hitboxData[plr].billboard:Destroy() end
-    end
-    local viz
-    local billboard
-    if hitboxVisual then
-        viz = Instance.new("Part",workspace)
-        viz.Anchored=true
-        viz.CanCollide=false
-        viz.Transparency=0.3
-        viz.Color=Color3.fromRGB(255,0,0)
-        viz.Material = Enum.Material.Neon
-        viz.CastShadow = false
 
-        billboard = Instance.new("BillboardGui", hrp)
-        billboard.Size = UDim2.new(0,100,0,100)
-        billboard.AlwaysOnTop = true
-        billboard.ResetOnSpawn = false
-        local bbFrame = Instance.new("Frame", billboard)
-        bbFrame.Size = UDim2.fromScale(1,1)
-        bbFrame.BackgroundColor3 = Color3.fromRGB(255,0,0)
-        bbFrame.BackgroundTransparency = 0.3
-        bbFrame.BorderSizePixel = 0
-    end
     local conn
     conn = RunService.RenderStepped:Connect(function()
-        if not hrp.Parent then
-            if viz then viz:Destroy() end
-            if billboard then billboard:Destroy() end
-            conn:Disconnect()
-            return
-        end
+        if not hrp.Parent then conn:Disconnect() return end
         hrp.Size=Vector3.new(hitboxSize,hitboxSize,hitboxSize)
-        hrp.CanCollide=false
-        if viz then viz.CFrame=hrp.CFrame viz.Size=hrp.Size end
+        hrp.CanCollide = hitboxCollision
     end)
-    hitboxData[plr]={conn=conn,viz=viz,billboard=billboard}
+    hitboxData[plr]={conn=conn}
 end
 
 local function reapplyHitboxes()
     for _,v in pairs(hitboxData) do
         if v.conn then v.conn:Disconnect() end
-        if v.viz then v.viz:Destroy() end
-        if v.billboard then v.billboard:Destroy() end
     end
     hitboxData={}
     for _,p in pairs(Players:GetPlayers()) do applyHitbox(p) end
@@ -194,212 +176,65 @@ hitboxToggle.MouseButton1Click:Connect(function()
     hitboxToggle.BackgroundColor3=hitboxEnabled and Color3.fromRGB(60,160,60) or Color3.fromRGB(200,50,50)
     reapplyHitboxes()
 end)
-hitboxInput.FocusLost:Connect(function()
-    local val=tonumber(hitboxInput.Text)
-    if val then hitboxSize=val reapplyHitboxes() end
-end)
-visualToggle.MouseButton1Click:Connect(function()
-    hitboxVisual=not hitboxVisual
-    visualToggle.Text="Visualizer: "..(hitboxVisual and "ON" or "OFF")
-    visualToggle.BackgroundColor3=hitboxVisual and Color3.fromRGB(60,160,60) or Color3.fromRGB(200,50,50)
-    reapplyHitboxes()
-end)
 
-Players.PlayerAdded:Connect(function(p)
-    p.CharacterAdded:Connect(function() task.wait(0.1) applyHitbox(p) end)
-end)
-for _,p in pairs(Players:GetPlayers()) do
-    p.CharacterAdded:Connect(function() task.wait(0.1) applyHitbox(p) end)
-end
-
--- SELF SECTION
-local selfFrame = Instance.new("Frame",frame)
-selfFrame.Size=UDim2.fromOffset(380,250)
-selfFrame.Position=UDim2.fromOffset(10,90)
-selfFrame.BackgroundTransparency = 1
-local tag2=Instance.new("StringValue",selfFrame)
-tag2.Name="SectionTag"
-tag2.Value="Self"
-selfFrame.Visible = false
-
-local selfOptions={
-    speed={value=16,enabled=false,key=Enum.KeyCode.T},
-    jump={value=50,enabled=false,key=Enum.KeyCode.Y},
-    fly={value=1,enabled=false,key=Enum.KeyCode.U}
-}
-
-local yStart=10
-for name,opt in pairs(selfOptions) do
-    local toggle = Instance.new("TextButton",selfFrame)
-    toggle.Position = UDim2.fromOffset(10,yStart)
-    toggle.Size = UDim2.fromOffset(140,35)
-    toggle.Text = name:sub(1,1):upper()..name:sub(2)..": OFF"
-    toggle.BackgroundColor3 = Color3.fromRGB(200,50,50)
-    Instance.new("UICorner", toggle).CornerRadius = UDim.new(0,6)
-    opt.toggleBtn = toggle
-
-    local keyBtn = Instance.new("TextButton",selfFrame)
-    keyBtn.Position = UDim2.fromOffset(160,yStart)
-    keyBtn.Size = UDim2.fromOffset(60,35)
-    keyBtn.Text = opt.key.Name
-    keyBtn.BackgroundColor3 = Color3.fromRGB(70,70,70)
-    Instance.new("UICorner", keyBtn).CornerRadius = UDim.new(0,6)
-    opt.keyBtn = keyBtn
-
-    local powerBox = Instance.new("TextBox",selfFrame)
-    powerBox.Position = UDim2.fromOffset(230,yStart)
-    powerBox.Size = UDim2.fromOffset(60,35)
-    powerBox.Text = tostring(opt.value)
-    powerBox.ClearTextOnFocus=false
-    powerBox.BackgroundColor3 = Color3.fromRGB(50,50,55)
-    powerBox.TextColor3 = Color3.fromRGB(255,255,255)
-    Instance.new("UICorner", powerBox).CornerRadius=UDim.new(0,6)
-    opt.powerBox = powerBox
-
-    yStart=yStart+45
-end
-
-local function updateBtn(btn,state)
-    btn.BackgroundColor3 = state and Color3.fromRGB(60,160,60) or Color3.fromRGB(200,50,50)
-    if state then
-        btn.Text = btn.Text:gsub("OFF","ON")
-    else
-        btn.Text = btn.Text:gsub("ON","OFF")
-    end
-end
-
--- CENTRALIZED TOGGLE FUNCTION
-local function toggleOption(opt)
-    opt.enabled = not opt.enabled
-    updateBtn(opt.toggleBtn, opt.enabled)
-end
-
--- CONNECT GUI BUTTONS
-for _,opt in pairs(selfOptions) do
-    opt.toggleBtn.MouseButton1Click:Connect(function()
-        toggleOption(opt)
-    end)
-    opt.powerBox.FocusLost:Connect(function()
-        local val = tonumber(opt.powerBox.Text)
-        if val then opt.value = val end
-    end)
-end
-
--- CONNECT KEYBOARD SHORTCUTS
-UserInputService.InputBegan:Connect(function(input, gp)
-    if gp then return end
-    for _,opt in pairs(selfOptions) do
-        if input.KeyCode == opt.key then
-            toggleOption(opt)
-        end
-    end
-end)
-
--- SPEED & JUMP APPLY LOOP
-RunService.RenderStepped:Connect(function()
-    local char = player.Character
-    if not char then return end
-
-    local hum = char:FindFirstChildWhichIsA("Humanoid")
-    if not hum then return end
-
-    if selfOptions.speed.enabled then
-        hum.WalkSpeed = tonumber(selfOptions.speed.powerBox.Text) or selfOptions.speed.value
-    else
-        hum.WalkSpeed = 16
-    end
-
-    if selfOptions.jump.enabled then
-        hum.JumpPower = tonumber(selfOptions.jump.powerBox.Text) or selfOptions.jump.value
-        hum.UseJumpPower = true
-    else
-        hum.JumpPower = 50
-        hum.UseJumpPower = true
-    end
-end)
-
--- === FLY SCRIPT (FIXED MOVEMENT) ===
-local flying = false
-local tpwalking = false
-local ctrl = {f=0,b=0,l=0,r=0}
+-- === FLY SCRIPT (FIXED) ===
+local flying=false
+local tpwalking=false
+local ctrl={f=0,b=0,l=0,r=0}
 
 local function startFly()
-    local plr = Players.LocalPlayer
-    local char = plr.Character
+    local char=player.Character
     if not char then return end
-    local hum = char:FindFirstChildWhichIsA("Humanoid")
-    local root = char:FindFirstChild("HumanoidRootPart") or char:FindFirstChild("Torso") or char:FindFirstChild("UpperTorso")
+    local hum=char:FindFirstChildWhichIsA("Humanoid")
+    local root=char:FindFirstChild("HumanoidRootPart")
     if not hum or not root then return end
 
-    plr.Character.Animate.Disabled = true
-    for _,v in next, hum:GetPlayingAnimationTracks() do v:AdjustSpeed(0) end
+    hum.PlatformStand=true
+    flying=true
+    tpwalking=true
 
-    hum.PlatformStand = true
-    flying = true
-    tpwalking = true
+    local bg=Instance.new("BodyGyro",root)
+    bg.MaxTorque=Vector3.new(9e9,9e9,9e9)
 
-    local bg = Instance.new("BodyGyro", root)
-    bg.P = 9e4
-    bg.MaxTorque = Vector3.new(9e9,9e9,9e9)
-    bg.CFrame = root.CFrame
+    local bv=Instance.new("BodyVelocity",root)
+    bv.MaxForce=Vector3.new(9e9,9e9,9e9)
 
-    local bv = Instance.new("BodyVelocity", root)
-    bv.MaxForce = Vector3.new(9e9,9e9,9e9)
-    bv.Velocity = Vector3.new(0,0,0)
-
-    while tpwalking and char.Parent and hum.Parent do
+    while tpwalking do
         RunService.RenderStepped:Wait()
-        local moveSpeed = (tonumber(selfOptions.fly.powerBox.Text) or 1)*30
+        local camCF=workspace.CurrentCamera.CFrame
+        local camLook=camCF.LookVector
+        local camRight=camCF.RightVector
 
-        local moveVec = Vector3.new(ctrl.r - ctrl.l, 0, ctrl.f - ctrl.b)
-        if moveVec.Magnitude>0 then moveVec = moveVec.Unit end
+        local forward=(ctrl.f-ctrl.b)
+        local side=(ctrl.r-ctrl.l)
 
-        local camCF = workspace.CurrentCamera.CFrame
-        local camLook = camCF.LookVector
-        local camRight = camCF.RightVector
-        local velocity = (camLook*moveVec.Z + camRight*moveVec.X)*moveSpeed
-        if ctrl.f + ctrl.b + ctrl.l + ctrl.r == 0 then
-            velocity = Vector3.new(0,0,0)
+        local velocity=(camLook*forward+camRight*side)*50
+        if forward==0 and side==0 then
+            velocity=Vector3.new()
         end
-        bv.Velocity = velocity
-        bg.CFrame = camCF
+
+        bv.Velocity=velocity
+        bg.CFrame=camCF
     end
 
-    tpwalking = false
-    flying = false
+    hum.PlatformStand=false
+    flying=false
     bv:Destroy()
     bg:Destroy()
-    hum.PlatformStand = false
-    plr.Character.Animate.Disabled = false
-    for _,v in next, hum:GetPlayingAnimationTracks() do v:AdjustSpeed(1) end
 end
 
-local function stopFly()
-    tpwalking=false
-end
-
--- FLY TOGGLE
-selfOptions.fly.toggleBtn.MouseButton1Click:Connect(function()
-    toggleOption(selfOptions.fly)
-    if selfOptions.fly.enabled and not flying then
-        spawn(startFly)
-    elseif not selfOptions.fly.enabled and flying then
-        stopFly()
-    end
+UserInputService.InputBegan:Connect(function(i,gp)
+    if gp then return end
+    if i.KeyCode==Enum.KeyCode.W then ctrl.f=1 end
+    if i.KeyCode==Enum.KeyCode.S then ctrl.b=1 end
+    if i.KeyCode==Enum.KeyCode.A then ctrl.l=1 end
+    if i.KeyCode==Enum.KeyCode.D then ctrl.r=1 end
 end)
 
--- FLY WASD CONTROLS
-UserInputService.InputBegan:Connect(function(input,gp)
+UserInputService.InputEnded:Connect(function(i,gp)
     if gp then return end
-    if input.KeyCode == Enum.KeyCode.W then ctrl.f=1 end
-    if input.KeyCode == Enum.KeyCode.S then ctrl.b=1 end
-    if input.KeyCode == Enum.KeyCode.A then ctrl.l=1 end
-    if input.KeyCode == Enum.KeyCode.D then ctrl.r=1 end
-end)
-UserInputService.InputEnded:Connect(function(input,gp)
-    if gp then return end
-    if input.KeyCode == Enum.KeyCode.W then ctrl.f=0 end
-    if input.KeyCode == Enum.KeyCode.S then ctrl.b=0 end
-    if input.KeyCode == Enum.KeyCode.A then ctrl.l=0 end
-    if input.KeyCode == Enum.KeyCode.D then ctrl.r=0 end
+    if i.KeyCode==Enum.KeyCode.W then ctrl.f=0 end
+    if i.KeyCode==Enum.KeyCode.S then ctrl.b=0 end
+    if i.KeyCode==Enum.KeyCode.A then ctrl.l=0 end
+    if i.KeyCode==Enum.KeyCode.D then ctrl.r=0 end
 end)
