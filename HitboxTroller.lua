@@ -102,7 +102,7 @@ mainFrame.Visible = true
 
 -- HITBOX VARIABLES
 local hitboxEnabled=false
-local hitboxSize=4
+local hitboxSize=8
 local hitboxVisual=false
 local hitboxData={}
 
@@ -152,21 +152,66 @@ collisionToggle.MouseButton1Click:Connect(function()
         end
         local char = plr.Character
         if char then
-            local hrp = char:FindFirstChild("HumanoidRootPart")
-            if hrp then
-                hrp.CanCollide = collisionEnabled
-            end
+ local bestPart = findBestHitboxPart(char)
+if bestPart then
+    bestPart.CanCollide = collisionEnabled
+end
+
         end
     end
 end)
+
+-- UNIVERSAL HITBOX FINDER
+local function findBestHitboxPart(character)
+    if not character then return nil end
+
+    local priority = {
+        "HumanoidRootPart",
+        "UpperTorso",
+        "LowerTorso",
+        "Torso",
+        "Head"
+    }
+
+    for _,name in ipairs(priority) do
+        local part = character:FindFirstChild(name)
+        if part and part:IsA("BasePart") then
+            return part
+        end
+    end
+
+    -- search renamed/custom hitboxes
+    for _,v in ipairs(character:GetChildren()) do
+        if v:IsA("BasePart") then
+            local n = v.Name:lower()
+            if n:find("hit") or n:find("root") or n:find("main") or n:find("core") then
+                return v
+            end
+        end
+    end
+
+    -- fallback biggest part
+    local biggest,size=nil,0
+    for _,v in ipairs(character:GetChildren()) do
+        if v:IsA("BasePart") then
+            local mag=v.Size.Magnitude
+            if mag>size then
+                size=mag
+                biggest=v
+            end
+        end
+    end
+
+    return biggest
+end
 
 -- HITBOX FUNCTIONS
 local function applyHitbox(plr)
     if not hitboxEnabled or plr==player then return end
     local char = plr.Character
     if not char then return end
-    local hrp = char:FindFirstChild("HumanoidRootPart")
-    if not hrp then return end
+   local hrp = findBestHitboxPart(char)
+if not hrp then return end
     if hitboxData[plr] then
         if hitboxData[plr].conn then hitboxData[plr].conn:Disconnect() end
         if hitboxData[plr].viz then hitboxData[plr].viz:Destroy() end
