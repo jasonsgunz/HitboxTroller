@@ -6,7 +6,6 @@ local UserInputService = game:GetService("UserInputService")
 local player = Players.LocalPlayer
 repeat task.wait() until player
 local playerGui = player:WaitForChild("PlayerGui")
-local CoreGui = game:GetService("CoreGui")
 
 if playerGui:FindFirstChild("HitboxTroller") then
     playerGui.HitboxTroller:Destroy()
@@ -239,8 +238,7 @@ if not hrp then return end
     end
     local viz
     local billboard
-  local viz
-local billboard
+
 
 -- RED BOX VISUAL
 if hitboxVisual then
@@ -260,7 +258,7 @@ end
 if hitboxBillboard then
     billboard = Instance.new("BillboardGui")
     billboard.Name = "ESP_" .. plr.Name
-    billboard.Parent = CoreGui
+    billboard.Parent = char
     billboard.Adornee = hrp
     billboard.AlwaysOnTop = true
     billboard.Size = UDim2.new(4, 0, 4, 0)
