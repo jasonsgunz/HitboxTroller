@@ -280,11 +280,13 @@ end
 
     local conn
     conn = RunService.RenderStepped:Connect(function()
-        if not hrp.Parent then
-            if viz then viz:Destroy() end
-            if billboard then billboard:Destroy() end
-            conn:Disconnect()
-            return
+       if not character or not character.Parent then
+    if viz then viz:Destroy() end
+    if billboard then billboard:Destroy() end
+    conn:Disconnect()
+    return
+end
+
         end
         hrp.Size=Vector3.new(hitboxSize,hitboxSize,hitboxSize)
         hrp.CanCollide = collisionEnabled
