@@ -6,7 +6,6 @@ local UserInputService = game:GetService("UserInputService")
 local player = Players.LocalPlayer
 repeat task.wait() until player
 local playerGui = player:WaitForChild("PlayerGui")
-local CoreGui = game:GetService("CoreGui")
 
 if playerGui:FindFirstChild("HitboxTroller") then
     playerGui.HitboxTroller:Destroy()
