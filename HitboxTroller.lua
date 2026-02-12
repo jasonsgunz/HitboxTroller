@@ -525,9 +525,11 @@ end)
 
 local StarterGui = game:GetService("StarterGui")
 
-StarterGui:SetCore("SendNotification", {
-    Title = "LOADED!",
-    Text = "Script made by jasonsgunz on Github",
-    Icon = "rbxassetid://6031091002", 
-    Duration = 4
-})
+pcall(function()
+    game:GetService("StarterGui"):SetCore("SendNotification", {
+        Title = "LOADED!",
+        Text = "Script made by jasonsgunz on Github",
+        Icon = "rbxassetid://6031091002",
+        Duration = 5
+    })
+end)
