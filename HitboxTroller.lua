@@ -266,6 +266,8 @@ if hitboxBillboard then
     billboard.Size = UDim2.new(4, 0, 4, 0)
     billboard.StudsOffset = Vector3.new(0, 3, 0)
     billboard.ResetOnSpawn = false
+    billboard.MaxDistance = 100000
+
 
     local bbFrame = Instance.new("Frame")
     bbFrame.Parent = billboard
