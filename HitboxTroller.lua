@@ -198,7 +198,6 @@ local function findBestHitboxPart(character)
         end
     end
 
-    -- search renamed/custom hitboxes
     for _,v in ipairs(character:GetChildren()) do
         if v:IsA("BasePart") then
             local n = v.Name:lower()
@@ -237,115 +236,73 @@ local function clearHitbox(plr)
 end
 
 local function applyHitbox(plr)
-    if not hitboxEnabled or plr == player then return end
-
+    if not plr.Character then return end
     local char = plr.Character
-    if not char then return end
-
-    local hrp = findBestHitboxPart(char)
+    local hrp = char:FindFirstChild("HumanoidRootPart")
     if not hrp then return end
 
-    clearHitbox(plr)
+    -- remove old
+    if hrp:FindFirstChild("HitboxExpander") then
+        hrp.HitboxExpander:Destroy()
+    end
+    if char:FindFirstChild("HitboxVisual") then
+        char.HitboxVisual:Destroy()
+    end
+    if hrp:FindFirstChild("ESP_" .. plr.Name) then
+        hrp["ESP_" .. plr.Name]:Destroy()
+    end
 
+    if not hitboxEnabled then return end
+
+    -- EXPAND HITBOX
     hrp.Size = Vector3.new(hitboxSize, hitboxSize, hitboxSize)
-    hrp.CanCollide = collisionEnabled
+    hrp.Transparency = 0.7
+    hrp.CanCollide = false
 
     local viz
     local billboard
 
+    -- RED BOX VISUAL
     if hitboxVisual then
         viz = Instance.new("Part")
-        viz.Anchored = true
+        viz.Name = "HitboxVisual"
+        viz.Size = hrp.Size
+        viz.CFrame = hrp.CFrame
+        viz.Transparency = 0.5
+        viz.Anchored = false
         viz.CanCollide = false
-        viz.CanTouch = false
-        viz.CanQuery = false
-        viz.Massless = true
-        viz.Transparency = 0.3
-        viz.Color = Color3.fromRGB(255,0,0)
-        viz.Material = Enum.Material.Neon
-        viz.Parent = workspace
+        viz.Color = Color3.fromRGB(255, 0, 0)
+        viz.Material = Enum.Material.ForceField
+        viz.Parent = char
+
+        local weld = Instance.new("WeldConstraint")
+        weld.Part0 = viz
+        weld.Part1 = hrp
+        weld.Parent = viz
     end
 
+    -- BILLBOARD ESP
     if hitboxBillboard then
         billboard = Instance.new("BillboardGui")
+        billboard.Name = "ESP_" .. plr.Name
         billboard.Adornee = hrp
         billboard.AlwaysOnTop = true
-        billboard.Size = UDim2.new(4,0,4,0)
-        billboard.StudsOffset = Vector3.new(0,3,0)
-        billboard.Parent = char
+        billboard.Size = UDim2.new(4, 0, 4, 0)
+        billboard.StudsOffset = Vector3.new(0, 3, 0)
+        billboard.ResetOnSpawn = false
+        billboard.Parent = hrp   -- SAFE (not CoreGui)
 
-        local f = Instance.new("Frame")
-        f.Size = UDim2.fromScale(1,1)
-        f.BackgroundColor3 = Color3.fromRGB(255,0,0)
-        f.BackgroundTransparency = 0.25
-        f.BorderSizePixel = 0
-        f.Parent = billboard
-    end
+        local frame = Instance.new("Frame")
+        frame.Size = UDim2.fromScale(1,1)
+        frame.BackgroundColor3 = Color3.fromRGB(255,0,0)
+        frame.BackgroundTransparency = 0.3
+        frame.BorderSizePixel = 0
+        frame.Parent = billboard
 
-    local conn
-    conn = RunService.RenderStepped:Connect(function()
-        if not hrp.Parent then
-            clearHitbox(plr)
-            return
-        end
-
-        if viz then
-            viz.CFrame = hrp.CFrame
-            viz.Size = hrp.Size
-        end
-    end)
-
-    hitboxData[plr] = {
-        conn = conn,
-        viz = viz,
-        billboard = billboard
-    }
-end
-
-reapplyHitboxes = function()
-    for plr,_ in pairs(hitboxData) do
-        clearHitbox(plr)
-    end
-
-    for _,p in pairs(Players:GetPlayers()) do
-        applyHitbox(p)
+        Instance.new("UICorner", frame)
     end
 end
 
-
--- RED BOX VISUAL
-if hitboxVisual then
-    viz = Instance.new("Part", workspace)
-    viz.Anchored = true
-    viz.CanCollide = false
-    viz.CanQuery = false
-    viz.CanTouch = false
-    viz.Transparency = 0.3
-    viz.Color = Color3.fromRGB(255,0,0)
-    viz.Material = Enum.Material.Neon
-    viz.CastShadow = false
-end
-
--- BILLBOARD ESP
-if hitboxBillboard then
-    billboard = Instance.new("BillboardGui")
-    billboard.Name = "ESP_" .. plr.Name
-    billboard.Parent = char
-    billboard.Adornee = hrp
-    billboard.AlwaysOnTop = true
-    billboard.Size = UDim2.new(4, 0, 4, 0)
-    billboard.StudsOffset = Vector3.new(0, 3, 0)
-    billboard.ResetOnSpawn = false
-
-    local bbFrame = Instance.new("Frame")
-    bbFrame.Parent = billboard
-    bbFrame.Size = UDim2.fromScale(1,1)
-    bbFrame.BackgroundColor3 = Color3.fromRGB(255,0,0)
-    bbFrame.BackgroundTransparency = 0.25
-    bbFrame.BorderSizePixel = 0
-
-    Instance.new("UICorner", bbFrame)
-end
 
 
     local conn
