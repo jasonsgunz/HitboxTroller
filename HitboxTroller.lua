@@ -205,24 +205,6 @@ local function applyHitbox(plr)
         Instance.new("UICorner", frame)
     end
 
-    local conn
-    conn = RunService.RenderStepped:Connect(function()
-        if not hrp or not hrp.Parent then
-            if viz then viz:Destroy() end
-            if billboard then billboard:Destroy() end
-            conn:Disconnect()
-            return
-        end
-
-        hrp.Size = Vector3.new(hitboxSize,hitboxSize,hitboxSize)
-        hrp.CanCollide = collisionEnabled
-
-        if viz then
-            viz.CFrame = hrp.CFrame
-            viz.Size = hrp.Size
-        end
-    end)
-
     hitboxData[plr] = {conn=conn,viz=viz,billboard=billboard}
 end
 
@@ -250,9 +232,23 @@ hitboxInput.FocusLost:Connect(function()
     if val then hitboxSize=val reapplyHitboxes() end
 end)
 visualToggle.MouseButton1Click:Connect(function()
-    hitboxVisual=not hitboxVisual
-    visualToggle.Text="Visualizer: "..(hitboxVisual and "ON" or "OFF")
-    visualToggle.BackgroundColor3=hitboxVisual and Color3.fromRGB(60,160,60) or Color3.fromRGB(200,50,50)
+        billboardToggle.MouseButton1Click:Connect(function()
+    hitboxBillboard = not hitboxBillboard
+    billboardToggle.Text = "Billboard: "..(hitboxBillboard and "ON" or "OFF")
+    billboardToggle.BackgroundColor3 =
+        hitboxBillboard and Color3.fromRGB(60,160,60)
+        or Color3.fromRGB(200,50,50)
+
+    reapplyHitboxes()
+end)
+
+collisionToggle.MouseButton1Click:Connect(function()
+    collisionEnabled = not collisionEnabled
+    collisionToggle.Text = "Collision: "..(collisionEnabled and "ON" or "OFF")
+    collisionToggle.BackgroundColor3 =
+        collisionEnabled and Color3.fromRGB(60,160,60)
+        or Color3.fromRGB(200,50,50)
+
     reapplyHitboxes()
 end)
 
@@ -260,7 +256,11 @@ Players.PlayerAdded:Connect(function(p)
     p.CharacterAdded:Connect(function() task.wait(0.1) applyHitbox(p) end)
 end)
 for _,p in pairs(Players:GetPlayers()) do
-    p.CharacterAdded:Connect(function() task.wait(0.1) applyHitbox(p) end)
+    p.CharacterAdded:Connect(function()
+        task.wait(0.1)
+        applyHitbox(p)
+    end)
+end
     local conn
 conn = RunService.RenderStepped:Connect(function()
     if not hrp.Parent then
