@@ -171,6 +171,10 @@ local function applyHitbox(plr)
 
     local hrp = findBestHitboxPart(char)
     if not hrp then return end
+if hitboxData[plr] and hitboxData[plr].conn then
+    hitboxData[plr].conn:Disconnect()
+end
+
 
     if hitboxData[plr] then
         if hitboxData[plr].conn then hitboxData[plr].conn:Disconnect() end
