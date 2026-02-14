@@ -104,217 +104,139 @@ local tag = Instance.new("StringValue", mainFrame)
 tag.Name = "SectionTag"
 tag.Value = "Main"
 mainFrame.Visible = true
-
--- HITBOX VARIABLES
--- HITBOX VARIABLES
-local hitboxEnabled=false
-local hitboxSize=8
-local hitboxVisual=false
-local hitboxBillboard=false
-local hitboxData={}
+-- HITBOX VARIABLES --
+local hitboxEnabled = false
+local hitboxSize = 8
+local hitboxVisual = false
+local hitboxBillboard = false
+local hitboxData = {}
+local collisionEnabled = true
 
 -- HITBOX UI
-local hitboxToggle = Instance.new("TextButton",mainFrame)
+local hitboxToggle = Instance.new("TextButton", mainFrame)
 hitboxToggle.Position = UDim2.fromOffset(10,10)
 hitboxToggle.Size = UDim2.fromOffset(140,35)
-hitboxToggle.Text="Hitbox: OFF"
-hitboxToggle.BackgroundColor3=Color3.fromRGB(200,50,50)
-Instance.new("UICorner",hitboxToggle).CornerRadius=UDim.new(0,6)
+hitboxToggle.Text = "Hitbox: OFF"
+hitboxToggle.BackgroundColor3 = Color3.fromRGB(200,50,50)
+Instance.new("UICorner", hitboxToggle).CornerRadius = UDim.new(0,6)
 
-local hitboxInput = Instance.new("TextBox",mainFrame)
+local hitboxInput = Instance.new("TextBox", mainFrame)
 hitboxInput.Position = UDim2.fromOffset(160,10)
 hitboxInput.Size = UDim2.fromOffset(60,35)
-hitboxInput.Text=tostring(hitboxSize)
-hitboxInput.ClearTextOnFocus=false
+hitboxInput.Text = tostring(hitboxSize)
+hitboxInput.ClearTextOnFocus = false
 hitboxInput.BackgroundColor3 = Color3.fromRGB(50,50,55)
 hitboxInput.TextColor3 = Color3.fromRGB(255,255,255)
-Instance.new("UICorner",hitboxInput).CornerRadius = UDim.new(0,6)
+Instance.new("UICorner", hitboxInput).CornerRadius = UDim.new(0,6)
 
-local visualToggle = Instance.new("TextButton",mainFrame)
+local visualToggle = Instance.new("TextButton", mainFrame)
 visualToggle.Position = UDim2.fromOffset(230,10)
 visualToggle.Size = UDim2.fromOffset(140,35)
-visualToggle.Text="Visualizer: OFF"
-visualToggle.BackgroundColor3=Color3.fromRGB(200,50,50)
-Instance.new("UICorner",visualToggle).CornerRadius = UDim.new(0,6)
+visualToggle.Text = "Visualizer: OFF"
+visualToggle.BackgroundColor3 = Color3.fromRGB(200,50,50)
+Instance.new("UICorner", visualToggle).CornerRadius = UDim.new(0,6)
 
 local billboardToggle = Instance.new("TextButton", mainFrame)
-billboardToggle.Position = UDim2.fromOffset(10, 100) -- adjust Y if needed
+billboardToggle.Position = UDim2.fromOffset(10,100)
 billboardToggle.Size = UDim2.fromOffset(140,35)
 billboardToggle.Text = "Billboard: OFF"
 billboardToggle.BackgroundColor3 = Color3.fromRGB(200,50,50)
 Instance.new("UICorner", billboardToggle).CornerRadius = UDim.new(0,6)
 
-billboardToggle.MouseButton1Click:Connect(function()
-    hitboxBillboard = not hitboxBillboard
-    billboardToggle.Text = "Billboard: "..(hitboxBillboard and "ON" or "OFF")
-    billboardToggle.BackgroundColor3 =
-        hitboxBillboard and Color3.fromRGB(60,160,60)
-        or Color3.fromRGB(200,50,50)
-
-    reapplyHitboxes()
-end)
-
--- COLLISION TOGGLE
-local collisionEnabled = true -- default: collisions on
-
 local collisionToggle = Instance.new("TextButton", mainFrame)
-collisionToggle.Position = UDim2.fromOffset(10, 55) -- adjust position as needed
-collisionToggle.Size = UDim2.fromOffset(140, 35)
+collisionToggle.Position = UDim2.fromOffset(10,55)
+collisionToggle.Size = UDim2.fromOffset(140,35)
 collisionToggle.Text = "Collision: ON"
 collisionToggle.BackgroundColor3 = Color3.fromRGB(60,160,60)
 Instance.new("UICorner", collisionToggle).CornerRadius = UDim.new(0,6)
 
-collisionToggle.MouseButton1Click:Connect(function()
-    collisionEnabled = not collisionEnabled
-    collisionToggle.Text = "Collision: " .. (collisionEnabled and "ON" or "OFF")
-    collisionToggle.BackgroundColor3 = collisionEnabled and Color3.fromRGB(60,160,60) or Color3.fromRGB(200,50,50)
-
-    -- reapply all hitboxes with new collision state
-    for plr, data in pairs(hitboxData) do
-        if data.viz then
-            data.viz.CanCollide = collisionEnabled
-        end
-        local char = plr.Character
-        if char then
- local bestPart = findBestHitboxPart(char)
-if bestPart then
-    bestPart.CanCollide = collisionEnabled
-end
-
-        end
-    end
-end)
-
--- UNIVERSAL HITBOX FINDER
+-- FIND BEST HITBOX PART
 local function findBestHitboxPart(character)
     if not character then return nil end
-
-    local priority = {
-        "HumanoidRootPart",
-        "UpperTorso",
-        "LowerTorso",
-        "Torso",
-        "Head"
-    }
-
+    local priority = {"HumanoidRootPart","UpperTorso","LowerTorso","Torso","Head"}
     for _,name in ipairs(priority) do
         local part = character:FindFirstChild(name)
-        if part and part:IsA("BasePart") then
-            return part
-        end
+        if part and part:IsA("BasePart") then return part end
     end
-
     for _,v in ipairs(character:GetChildren()) do
-        if v:IsA("BasePart") then
-            local n = v.Name:lower()
-            if n:find("hit") or n:find("root") or n:find("main") or n:find("core") then
-                return v
-            end
-        end
+        if v:IsA("BasePart") then return v end
     end
-
-    local biggest,size=nil,0
-    for _,v in ipairs(character:GetChildren()) do
-        if v:IsA("BasePart") then
-            local mag=v.Size.Magnitude
-            if mag>size then
-                size=mag
-                biggest=v
-            end
-        end
-    end
-
-    return biggest
 end
 
--- HITBOX FUNCTIONS
-
-local function clearHitbox(plr)
-    local data = hitboxData[plr]
-    if not data then return end
-
-    if data.conn then data.conn:Disconnect() end
-    if data.viz then data.viz:Destroy() end
-    if data.billboard then data.billboard:Destroy() end
-
-    hitboxData[plr] = nil
-end
-
+-- APPLY HITBOX
 local function applyHitbox(plr)
-    if not plr.Character then return end
+    if not hitboxEnabled or plr == player then return end
     local char = plr.Character
-    local hrp = char:FindFirstChild("HumanoidRootPart")
+    if not char then return end
+
+    local hrp = findBestHitboxPart(char)
     if not hrp then return end
 
-    if hrp:FindFirstChild("HitboxExpander") then
-        hrp.HitboxExpander:Destroy()
+    if hitboxData[plr] then
+        if hitboxData[plr].conn then hitboxData[plr].conn:Disconnect() end
+        if hitboxData[plr].viz then hitboxData[plr].viz:Destroy() end
+        if hitboxData[plr].billboard then hitboxData[plr].billboard:Destroy() end
     end
-    if char:FindFirstChild("HitboxVisual") then
-        char.HitboxVisual:Destroy()
-    end
-    if hrp:FindFirstChild("ESP_" .. plr.Name) then
-        hrp["ESP_" .. plr.Name]:Destroy()
-    end
-
-    if not hitboxEnabled then return end
-
-    -- EXPAND HITBOX
-    hrp.Size = Vector3.new(hitboxSize, hitboxSize, hitboxSize)
-    hrp.Transparency = 0.7
-    hrp.CanCollide = false
 
     local viz
     local billboard
 
-    -- RED BOX VISUAL
     if hitboxVisual then
         viz = Instance.new("Part")
-        viz.Name = "HitboxVisual"
-        viz.Size = hrp.Size
-        viz.CFrame = hrp.CFrame
-        viz.Transparency = 0.5
-        viz.Anchored = false
+        viz.Parent = workspace
+        viz.Anchored = true
         viz.CanCollide = false
-        viz.Color = Color3.fromRGB(255, 0, 0)
-        viz.Material = Enum.Material.ForceField
-        viz.Parent = char
-
-        local weld = Instance.new("WeldConstraint")
-        weld.Part0 = viz
-        weld.Part1 = hrp
-        weld.Parent = viz
+        viz.Transparency = 0.3
+        viz.Color = Color3.fromRGB(255,0,0)
+        viz.Material = Enum.Material.Neon
     end
 
-    -- BILLBOARD ESP
     if hitboxBillboard then
         billboard = Instance.new("BillboardGui")
-        billboard.Name = "ESP_" .. plr.Name
+        billboard.Parent = player.PlayerGui
         billboard.Adornee = hrp
+        billboard.Size = UDim2.new(4,0,4,0)
         billboard.AlwaysOnTop = true
-        billboard.Size = UDim2.new(4, 0, 4, 0)
-        billboard.StudsOffset = Vector3.new(0, 3, 0)
-        billboard.ResetOnSpawn = false
-        billboard.Parent = hrp   
 
-        local frame = Instance.new("Frame")
+        local frame = Instance.new("Frame", billboard)
         frame.Size = UDim2.fromScale(1,1)
         frame.BackgroundColor3 = Color3.fromRGB(255,0,0)
         frame.BackgroundTransparency = 0.3
-        frame.BorderSizePixel = 0
-        frame.Parent = billboard
-
         Instance.new("UICorner", frame)
     end
+
+    local conn
+    conn = RunService.RenderStepped:Connect(function()
+        if not hrp or not hrp.Parent then
+            if viz then viz:Destroy() end
+            if billboard then billboard:Destroy() end
+            conn:Disconnect()
+            return
+        end
+
+        hrp.Size = Vector3.new(hitboxSize,hitboxSize,hitboxSize)
+        hrp.CanCollide = collisionEnabled
+
+        if viz then
+            viz.CFrame = hrp.CFrame
+            viz.Size = hrp.Size
+        end
+    end)
+
+    hitboxData[plr] = {conn=conn,viz=viz,billboard=billboard}
 end
 
+-- REAPPLY
 local function reapplyHitboxes()
     for _,v in pairs(hitboxData) do
         if v.conn then v.conn:Disconnect() end
         if v.viz then v.viz:Destroy() end
         if v.billboard then v.billboard:Destroy() end
     end
-    hitboxData={}
-    for _,p in pairs(Players:GetPlayers()) do applyHitbox(p) end
+    hitboxData = {}
+    for _,p in pairs(Players:GetPlayers()) do
+        applyHitbox(p)
+    end
 end
 
 hitboxToggle.MouseButton1Click:Connect(function()
