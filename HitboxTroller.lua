@@ -261,7 +261,7 @@ for _,p in pairs(Players:GetPlayers()) do
         applyHitbox(p)
     end)
 end
-    local conn
+  local conn
 conn = RunService.RenderStepped:Connect(function()
     if not hrp.Parent then
         if viz then viz:Destroy() end
