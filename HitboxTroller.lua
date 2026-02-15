@@ -185,17 +185,16 @@ end
     local viz
     local billboard
 
-   if hitboxVisual then
+  if hitboxVisual then
     viz = Instance.new("Part")
+    viz.Size = Vector3.new(hitboxSize, hitboxSize, hitboxSize)
     viz.Anchored = true
     viz.CanCollide = false
-    viz.Transparency = 0.7      -- ghost look
+    viz.Transparency = 0.7
     viz.Color = Color3.fromRGB(255,0,0)
     viz.Material = Enum.Material.Neon
-    viz.Size = hrp.Size
-    viz.CFrame = hrp.CFrame
-    viz.Parent = workspace
     viz.CastShadow = false
+    viz.Parent = workspace
 
     local followConn
     followConn = RunService.RenderStepped:Connect(function()
@@ -205,15 +204,12 @@ end
             return
         end
         viz.CFrame = hrp.CFrame
-        viz.Size = Vector3.new(hitboxSize, hitboxSize, hitboxSize)
     end)
 
     hitboxData[plr] = hitboxData[plr] or {}
     hitboxData[plr].viz = viz
     hitboxData[plr].vizConn = followConn
 end
-
-
 
     if hitboxBillboard then
         billboard = Instance.new("BillboardGui")
