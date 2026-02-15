@@ -582,7 +582,7 @@ end
 
 pcall(function()
     game:GetService("StarterGui"):SetCore("SendNotification", {
-        Title = "LOADED!",
+        Title = "LOADED! VERSION 1.2",
         Text = "This Script was made by jasonsgunz on Github. Show Love!",
         Icon = "rbxassetid://6031094670",
         Duration = 6
