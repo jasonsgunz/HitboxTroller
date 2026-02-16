@@ -555,8 +555,9 @@ UserInputService.InputEnded:Connect(function(input,gp)
     if input.KeyCode == Enum.KeyCode.D then ctrl.r=0 end
 end)
 
+-- ===== FLY GAME BLOCK (PERMA LOCK) =====
 local blockedPlaceIds = {
-    2788229376
+    2788229376,
 }
 
 local function isBlockedPlace()
@@ -569,18 +570,18 @@ local function isBlockedPlace()
 end
 
 if isBlockedPlace() then
-
     local btn = selfOptions.fly.toggleBtn
+    
+    selfOptions.fly.enabled = false
+    
+    btn.AutoButtonColor = false
     btn.BackgroundColor3 = Color3.fromRGB(80,80,80)
     btn.Text = "Fly: OFF\n(not supported yet)"
-    btn.AutoButtonColor = false
+    btn.Active = false
+    btn.Selectable = false
 
-    selfOptions.fly.enabled = false
-
-    btn.MouseButton1Click:Connect(function()
-        selfOptions.fly.enabled = false
-        btn.Text = "Fly: OFF\n(not supported yet)"
-    end)
+    startFly = function() end
+    stopFly = function() end
 
     UserInputService.InputBegan:Connect(function(input,gp)
         if gp then return end
@@ -589,7 +590,11 @@ if isBlockedPlace() then
         end
     end)
 
-    startFly = function() end
+    RunService.RenderStepped:Connect(function()
+        btn.BackgroundColor3 = Color3.fromRGB(80,80,80)
+        btn.Text = "Fly: OFF\n(not supported yet)"
+        selfOptions.fly.enabled = false
+    end)
 end
 
 pcall(function()
