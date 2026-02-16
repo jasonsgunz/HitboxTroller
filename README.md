@@ -1,3 +1,3 @@
-Update Log 1.2.5:
-                                                                                                                                                                         -- added disabling buttons for buttons that are broken or bans u because of anti cheat detection (only available for da hood atm)                                                                                                                                                                                                              
+Update Log 1.2.6:
+                                                                                                                                                                         -- added a new better anti fling script                                                                                                                                                                                                             
 ("NOTE: THIS SCRIPT DOESNT WORK IN EVERY GAME I WILL ADD NEW CHARACTER RIGS TO IT ASAP")
