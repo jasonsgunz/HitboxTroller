@@ -356,3 +356,12 @@ end)
 
 Players.PlayerAdded:Connect(function(p) p.CharacterAdded:Connect(function() task.wait(0.1); applyHitbox(p) end) end)
 for _,p in pairs(Players:GetPlayers()) do p.CharacterAdded:Connect(function() task.wait(0.1); applyHitbox(p) end) end
+
+pcall(function()
+    game:GetService("StarterGui"):SetCore("SendNotification", {
+        Title = "VERSION V.3.0",
+        Text = "This Script was made by jasonsgunz on Github.",
+        Icon = "rbxassetid://6031094670",
+        Duration = 6
+    })
+end)
