@@ -112,10 +112,10 @@ local function reapplyHitboxes()
 end
 
 local ScreenGui = Instance.new("ScreenGui", LocalPlayer:WaitForChild("PlayerGui"))
-ScreenGui.Name = "Universal_V18_PreciseTracers"
+ScreenGui.Name = "Universal_V19_AntiFlingFix"
 ScreenGui.ResetOnSpawn = false
 ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Global
-ScreenGui.IgnoreGuiInset = true -- FIXES THE ALIGNMENT BUG
+ScreenGui.IgnoreGuiInset = true 
 
 local Main = Instance.new("Frame", ScreenGui)
 Main.Size = UDim2.new(0, 380, 0, 300); Main.Position = UDim2.new(0.5, -190, 0.5, -150)
@@ -294,15 +294,23 @@ table.insert(_Connections, RunService.RenderStepped:Connect(function()
     local char = LocalPlayer.Character
     local myRoot = char and char:FindFirstChild("HumanoidRootPart")
     
-    if char and char:FindFirstChildOfClass("Humanoid") then
+    if char then
         local hum = char:FindFirstChildOfClass("Humanoid")
-        hum.WalkSpeed = selfOptions.speed.enabled and selfOptions.speed.value or 16
-        hum.JumpPower = selfOptions.jump.enabled and selfOptions.jump.value or 50
+        if hum then
+            hum.WalkSpeed = selfOptions.speed.enabled and selfOptions.speed.value or 16
+            hum.JumpPower = selfOptions.jump.enabled and selfOptions.jump.value or 50
+        end
         
+        -- ROBUST ANTI-FLING 2.0
         if antiFlingEnabled then
             for _, v in pairs(char:GetDescendants()) do
-                if v:IsA("BasePart") then v.CanTouch = false; v.CanQuery = false end
+                if v:IsA("BasePart") then 
+                    v.CanTouch = false
+                    v.AssemblyLinearVelocity = Vector3.zero
+                    v.AssemblyAngularVelocity = Vector3.zero
+                end
             end
+            if hum then hum.Sit = false end
         end
     end
     
@@ -332,7 +340,7 @@ table.insert(_Connections, RunService.RenderStepped:Connect(function()
                         local p1 = Vector2.new(myPos.X, myPos.Y)
                         local p2 = Vector2.new(pos.X, pos.Y)
                         local dist = (p2 - p1).Magnitude
-                        cache.line.Size = UDim2.new(0, dist, 0, 1.5) -- Slightly thicker for visibility
+                        cache.line.Size = UDim2.new(0, dist, 0, 1.5)
                         cache.line.Position = UDim2.new(0, (p1.X + p2.X) / 2, 0, (p1.Y + p2.Y) / 2)
                         cache.line.Rotation = math.deg(math.atan2(p2.Y - p1.Y, p2.X - p1.X))
                         cache.line.Visible = true
@@ -468,7 +476,6 @@ end)
 
 Players.PlayerAdded:Connect(function(p) p.CharacterAdded:Connect(function() task.wait(0.1); applyHitbox(p) end) end)
 for _,p in pairs(Players:GetPlayers()) do p.CharacterAdded:Connect(function() task.wait(0.1); applyHitbox(p) end) end
-
 pcall(function()
     game:GetService("StarterGui"):SetCore("SendNotification", {
         Title = "VERSION V.3.1 (BETA)",
