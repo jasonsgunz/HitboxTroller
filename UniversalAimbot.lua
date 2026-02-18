@@ -6,7 +6,7 @@ local LocalPlayer = Players.LocalPlayer
 local Camera = workspace.CurrentCamera
 
 local Active = false
-local Keybind = Enum.KeyCode.Unknown -- Set to NONE
+local Keybind = Enum.KeyCode.Unknown
 local TargetPartName = "HumanoidRootPart"
 local Mode = "Hold"
 local Prediction = 0 
@@ -15,9 +15,9 @@ local LockedPlayer = nil
 local Checks = { Alive = false, Team = false, Wall = false }
 
 local selfOptions = {
-    speed = {value = 16, enabled = false, key = Enum.KeyCode.Unknown, setting = false}, -- Set to NONE
-    jump = {value = 50, enabled = false, key = Enum.KeyCode.Unknown, setting = false},  -- Set to NONE
-    fly = {value = 1, enabled = false, key = Enum.KeyCode.Unknown, setting = false}     -- Set to NONE
+    speed = {value = 16, enabled = false, key = Enum.KeyCode.Unknown, setting = false},
+    jump = {value = 50, enabled = false, key = Enum.KeyCode.Unknown, setting = false},
+    fly = {value = 1, enabled = false, key = Enum.KeyCode.Unknown, setting = false}
 }
 local espOptions = {
     tracers = false,
