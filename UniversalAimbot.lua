@@ -26,8 +26,8 @@ local espOptions = {
 }
 
 local antiFlingEnabled = false
-local lastSafeCF = CFrame.new() -- Added for Advanced Guard
-local teleportThreshold = 20    -- Added for Advanced Guard
+local lastSafeCF = CFrame.new()
+local teleportThreshold = 20
 local tpwalking = false
 local ctrl = {f=0,b=0,l=0,r=0}
 
@@ -303,7 +303,6 @@ table.insert(_Connections, RunService.RenderStepped:Connect(function()
             hum.JumpPower = selfOptions.jump.enabled and selfOptions.jump.value or 50
         end
         
-        -- ADVANCED PHYSICS GUARD (Swapped Logic)
         if antiFlingEnabled and myRoot then
             local currentCF = myRoot.CFrame
             local distanceMoved = (currentCF.Position - lastSafeCF.Position).Magnitude
@@ -498,7 +497,7 @@ for _,p in pairs(Players:GetPlayers()) do p.CharacterAdded:Connect(function() ta
 
 pcall(function()
     game:GetService("StarterGui"):SetCore("SendNotification", {
-        Title = "VERSION V.3.1 (BETA)",
+        Title = "VERSION V.3.1",
         Text = "This Script was made by jasonsgunz on Github.",
         Icon = "rbxassetid://6031094670",
         Duration = 6
