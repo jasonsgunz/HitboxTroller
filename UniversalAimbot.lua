@@ -6,7 +6,7 @@ local LocalPlayer = Players.LocalPlayer
 local Camera = workspace.CurrentCamera
 
 local Active = false
-local Keybind = Enum.KeyCode.E
+local Keybind = Enum.KeyCode.Unknown -- Set to NONE
 local TargetPartName = "HumanoidRootPart"
 local Mode = "Hold"
 local Prediction = 0 
@@ -15,9 +15,9 @@ local LockedPlayer = nil
 local Checks = { Alive = false, Team = false, Wall = false }
 
 local selfOptions = {
-    speed = {value = 16, enabled = false, key = Enum.KeyCode.T, setting = false},
-    jump = {value = 50, enabled = false, key = Enum.KeyCode.Y, setting = false},
-    fly = {value = 1, enabled = false, key = Enum.KeyCode.U, setting = false}
+    speed = {value = 16, enabled = false, key = Enum.KeyCode.Unknown, setting = false}, -- Set to NONE
+    jump = {value = 50, enabled = false, key = Enum.KeyCode.Unknown, setting = false},  -- Set to NONE
+    fly = {value = 1, enabled = false, key = Enum.KeyCode.Unknown, setting = false}     -- Set to NONE
 }
 local espOptions = {
     tracers = false,
@@ -178,7 +178,7 @@ UIS.InputEnded:Connect(function(input) if input.UserInputType == Enum.UserInputT
 
 local BindRow = Instance.new("Frame", MainPage); BindRow.Size = UDim2.new(0, 340, 0, 35); BindRow.BackgroundTransparency = 1
 local BindTxt = Instance.new("TextLabel", BindRow); BindTxt.Size = UDim2.new(0, 100, 1, 0); BindTxt.BackgroundTransparency = 1; BindTxt.Text = "Keybind:"; BindTxt.TextColor3 = Color3.new(1,1,1); BindTxt.Font = "Gotham"; BindTxt.TextXAlignment = "Left"
-local BindBtn = Instance.new("TextButton", BindRow); BindBtn.Size = UDim2.new(0, 80, 0, 25); BindBtn.Position = UDim2.new(0, 70, 0.5, -12); BindBtn.BackgroundColor3 = Color3.fromRGB(45, 45, 50); BindBtn.Text = "["..Keybind.Name.."]"; BindBtn.TextColor3 = Color3.new(1, 1, 1); Instance.new("UICorner", BindBtn)
+local BindBtn = Instance.new("TextButton", BindRow); BindBtn.Size = UDim2.new(0, 80, 0, 25); BindBtn.Position = UDim2.new(0, 70, 0.5, -12); BindBtn.BackgroundColor3 = Color3.fromRGB(45, 45, 50); BindBtn.Text = "[NONE]"; BindBtn.TextColor3 = Color3.new(1, 1, 1); Instance.new("UICorner", BindBtn)
 BindBtn.MouseButton1Click:Connect(function() SettingKey = true; BindBtn.Text = "[...]" end)
 
 local ModeBtn = Instance.new("TextButton", MainPage); ModeBtn.Size = UDim2.new(0, 340, 0, 35); ModeBtn.BackgroundColor3 = Color3.fromRGB(45, 45, 50); ModeBtn.Text = "MODE: HOLD"; ModeBtn.TextColor3 = Color3.new(1,1,1); Instance.new("UICorner", ModeBtn)
@@ -242,7 +242,7 @@ end
 for name, opt in pairs(selfOptions) do
     local row = Instance.new("Frame", SelfPage); row.Size = UDim2.new(0, 340, 0, 40); row.BackgroundTransparency = 1
     local toggle = Instance.new("TextButton", row); toggle.Size = UDim2.new(0, 140, 0, 35); updateSelfBtn(toggle, opt.enabled, name); Instance.new("UICorner", toggle)
-    local kBtn = Instance.new("TextButton", row); kBtn.Size = UDim2.new(0, 60, 0, 35); kBtn.Position = UDim2.fromOffset(150, 0); kBtn.Text = "["..opt.key.Name.."]"; Instance.new("UICorner", kBtn)
+    local kBtn = Instance.new("TextButton", row); kBtn.Size = UDim2.new(0, 60, 0, 35); kBtn.Position = UDim2.fromOffset(150, 0); kBtn.Text = "[NONE]"; Instance.new("UICorner", kBtn)
     local val = Instance.new("TextBox", row); val.Size = UDim2.new(0, 60, 0, 35); val.Position = UDim2.fromOffset(220, 0); val.Text = tostring(opt.value); Instance.new("UICorner", val)
     
     toggle.MouseButton1Click:Connect(function() 
@@ -332,7 +332,6 @@ table.insert(_Connections, RunService.RenderStepped:Connect(function()
         end
     end
     
-    -- ALL ESP CLEANUP (Tracers, Names, and Dots)
     for p, cache in pairs(espCache) do
         if not p or not p.Parent or not p.Character then
             if cache.line then cache.line:Destroy() end
@@ -457,23 +456,35 @@ table.insert(_Connections, RunService.RenderStepped:Connect(function()
 end))
 
 table.insert(_Connections, UIS.InputBegan:Connect(function(input, gp)
-    if SettingKey then Keybind = input.KeyCode; BindBtn.Text = "["..input.KeyCode.Name.."]"; SettingKey = false; return end
+    if SettingKey then 
+        Keybind = input.KeyCode
+        BindBtn.Text = "["..input.KeyCode.Name:upper().."]"
+        SettingKey = false
+        return 
+    end
     for name, opt in pairs(selfOptions) do 
-        if opt.setting then opt.key = input.KeyCode; opt.keyBtn.Text = "["..input.KeyCode.Name.."]"; opt.setting = false; return end 
-        if not gp and input.KeyCode == opt.key then 
+        if opt.setting then 
+            opt.key = input.KeyCode
+            opt.keyBtn.Text = "["..input.KeyCode.Name:upper().."]"
+            opt.setting = false
+            return 
+        end 
+        if not gp and input.KeyCode ~= Enum.KeyCode.Unknown and input.KeyCode == opt.key then 
             opt.enabled = not opt.enabled; updateSelfBtn(opt.toggleBtn, opt.enabled, name)
             if name == "fly" then if opt.enabled then task.spawn(startFly) else tpwalking = false end end
         end
     end
     if not gp then 
-        if input.KeyCode == Keybind then if Mode == "Hold" then Active = true else Active = not Active end end
+        if input.KeyCode ~= Enum.KeyCode.Unknown and input.KeyCode == Keybind then 
+            if Mode == "Hold" then Active = true else Active = not Active end 
+        end
         if input.KeyCode == Enum.KeyCode.W then ctrl.f=1 elseif input.KeyCode == Enum.KeyCode.S then ctrl.b=1 end
         if input.KeyCode == Enum.KeyCode.A then ctrl.l=1 elseif input.KeyCode == Enum.KeyCode.D then ctrl.r=1 end
     end
 end))
 
 table.insert(_Connections, UIS.InputEnded:Connect(function(input)
-    if input.KeyCode == Keybind and Mode == "Hold" then Active = Active and false or false; LockedPlayer = nil end
+    if input.KeyCode ~= Enum.KeyCode.Unknown and input.KeyCode == Keybind and Mode == "Hold" then Active = Active and false or false; LockedPlayer = nil end
     if input.KeyCode == Enum.KeyCode.W then ctrl.f=0 elseif input.KeyCode == Enum.KeyCode.S then ctrl.b=0 end
     if input.KeyCode == Enum.KeyCode.A then ctrl.l=0 elseif input.KeyCode == Enum.KeyCode.D then ctrl.r=0 end
 end))
