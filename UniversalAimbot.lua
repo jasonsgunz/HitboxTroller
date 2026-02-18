@@ -1,6 +1,7 @@
 local UIS = game:GetService("UserInputService")
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
+local Teams = game:GetService("Teams")
 local LocalPlayer = Players.LocalPlayer
 local Camera = workspace.CurrentCamera
 
@@ -18,6 +19,12 @@ local selfOptions = {
     jump = {value = 50, enabled = false, key = Enum.KeyCode.Y, setting = false},
     fly = {value = 1, enabled = false, key = Enum.KeyCode.U, setting = false}
 }
+local espOptions = {
+    tracers = false,
+    names = false,
+    dot = false
+}
+
 local antiFlingEnabled = false
 local tpwalking = false
 local ctrl = {f=0,b=0,l=0,r=0}
@@ -25,11 +32,22 @@ local ctrl = {f=0,b=0,l=0,r=0}
 local hitboxEnabled = false
 local hitboxSize = 8
 local hitboxVisual = false
-local hitboxBillboard = false
 local hitboxData = {}
 local collisionEnabled = false
 
+local espCache = {} 
 local _Connections = {}
+
+local function isVisible(targetPart)
+    local origin = Camera.CFrame.Position
+    local direction = targetPart.Position - origin
+    local rayParams = RaycastParams.new()
+    rayParams.FilterDescendantsInstances = {LocalPlayer.Character, targetPart.Parent}
+    rayParams.FilterType = Enum.RaycastFilterType.Exclude
+    
+    local result = workspace:Raycast(origin, direction, rayParams)
+    return result == nil
+end
 
 local function findBestHitboxPart(character)
     if not character then return nil end
@@ -51,10 +69,9 @@ local function applyHitbox(plr)
     if hitboxData[plr] then
         if hitboxData[plr].conn then hitboxData[plr].conn:Disconnect() end
         if hitboxData[plr].viz then hitboxData[plr].viz:Destroy() end
-        if hitboxData[plr].billboard then hitboxData[plr].billboard:Destroy() end
     end
 
-    local viz, billboard
+    local viz
     if hitboxVisual then
         viz = Instance.new("Part")
         viz.Size = Vector3.new(hitboxSize, hitboxSize, hitboxSize)
@@ -62,32 +79,23 @@ local function applyHitbox(plr)
         viz.Color = Color3.fromRGB(255,0,0); viz.Material = Enum.Material.Neon; viz.Parent = workspace
     end
 
-    if hitboxBillboard then
-        billboard = Instance.new("BillboardGui")
-        billboard.Parent = hrp; billboard.Adornee = hrp; billboard.Size = UDim2.new(4,0,4,0); billboard.AlwaysOnTop = true
-        local f = Instance.new("Frame", billboard); f.Size = UDim2.fromScale(1,1)
-        f.BackgroundColor3 = Color3.fromRGB(255,0,0); f.BackgroundTransparency = 0.3; Instance.new("UICorner", f)
-    end
-
     local conn
     conn = RunService.RenderStepped:Connect(function()
         if not hrp or not hrp.Parent then
             if viz then viz:Destroy() end
-            if billboard then billboard:Destroy() end
             conn:Disconnect(); return
         end
         hrp.Size = Vector3.new(hitboxSize, hitboxSize, hitboxSize)
         hrp.CanCollide = collisionEnabled
         if viz then viz.CFrame = hrp.CFrame; viz.Size = hrp.Size end
     end)
-    hitboxData[plr] = {conn=conn,viz=viz,billboard=billboard}
+    hitboxData[plr] = {conn=conn,viz=viz}
 end
 
 local function reapplyHitboxes()
     for _,v in pairs(hitboxData) do
         if v.conn then v.conn:Disconnect() end
         if v.viz then v.viz:Destroy() end
-        if v.billboard then v.billboard:Destroy() end
     end
     hitboxData = {}
     if not hitboxEnabled then
@@ -104,7 +112,7 @@ local function reapplyHitboxes()
 end
 
 local ScreenGui = Instance.new("ScreenGui", LocalPlayer:WaitForChild("PlayerGui"))
-ScreenGui.Name = "Universal_V15_Final_Clean"
+ScreenGui.Name = "Universal_V16_ESP_Clean"
 ScreenGui.ResetOnSpawn = false
 ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Global
 
@@ -112,6 +120,9 @@ local Main = Instance.new("Frame", ScreenGui)
 Main.Size = UDim2.new(0, 380, 0, 300); Main.Position = UDim2.new(0.5, -190, 0.5, -150)
 Main.BackgroundColor3 = Color3.fromRGB(25, 25, 30); Main.Active = true; Main.BorderSizePixel = 0
 Instance.new("UICorner", Main).CornerRadius = UDim.new(0, 8)
+
+local TracerContainer = Instance.new("Frame", ScreenGui)
+TracerContainer.Size = UDim2.new(1,0,1,0); TracerContainer.BackgroundTransparency = 1; TracerContainer.Visible = true
 
 local DropdownFrame = Instance.new("Frame", ScreenGui)
 DropdownFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 35); DropdownFrame.Visible = false; DropdownFrame.ZIndex = 100
@@ -134,15 +145,18 @@ MainTab.Size = UDim2.new(0, 80, 1, 0); MainTab.BackgroundColor3 = Color3.fromRGB
 
 local SelfTab = MainTab:Clone(); SelfTab.Parent = TabHolder; SelfTab.Position = UDim2.new(0, 85, 0, 0); SelfTab.Text = "SELF"; SelfTab.BackgroundColor3 = Color3.fromRGB(35, 35, 40)
 local HitTab = MainTab:Clone(); HitTab.Parent = TabHolder; HitTab.Position = UDim2.new(0, 170, 0, 0); HitTab.Text = "HITBOX"; HitTab.BackgroundColor3 = Color3.fromRGB(35, 35, 40)
+local EspTab = MainTab:Clone(); EspTab.Parent = TabHolder; EspTab.Position = UDim2.new(0, 255, 0, 0); EspTab.Text = "ESP"; EspTab.BackgroundColor3 = Color3.fromRGB(35, 35, 40)
 
 local MainPage = Instance.new("ScrollingFrame", Main)
 MainPage.Size = UDim2.new(1, 0, 1, -75); MainPage.Position = UDim2.new(0, 0, 0, 75); MainPage.BackgroundTransparency = 1; MainPage.BorderSizePixel = 0; MainPage.CanvasSize = UDim2.new(0, 0, 0, 320); MainPage.ScrollBarThickness = 0
 local SelfPage = MainPage:Clone(); SelfPage.Parent = Main; SelfPage.Visible = false
 local HitPage = MainPage:Clone(); HitPage.Parent = Main; HitPage.Visible = false
+local EspPage = MainPage:Clone(); EspPage.Parent = Main; EspPage.Visible = false
 
 Instance.new("UIListLayout", MainPage).HorizontalAlignment = "Center"; MainPage.UIListLayout.Padding = UDim.new(0, 8)
 Instance.new("UIListLayout", SelfPage).HorizontalAlignment = "Center"; SelfPage.UIListLayout.Padding = UDim.new(0, 8)
-Instance.new("UIListLayout", HitPage).HorizontalAlignment = "Center"; HitPage.UIListLayout.Padding = UDim.new(0, 8)
+Instance.new("UIListLayout", HitPage).HorizontalAlignment = "Center"; HitPage.UIListLayout.Padding = UDim.new(0, 15)
+Instance.new("UIListLayout", EspPage).HorizontalAlignment = "Center"; EspPage.UIListLayout.Padding = UDim.new(0, 8)
 
 local Sliding = false
 local PredRow = Instance.new("Frame", MainPage); PredRow.Size = UDim2.new(0, 340, 0, 45); PredRow.BackgroundTransparency = 1
@@ -185,13 +199,19 @@ PartBtn.MouseButton1Click:Connect(function()
 end)
 
 ChecksBtn.MouseButton1Click:Connect(function() 
-    OpenDrop(ChecksBtn, 105) 
+    local hasTeams = #Teams:GetTeams() > 0
+    local dropdownHeight = hasTeams and 105 or 70
+    OpenDrop(ChecksBtn, dropdownHeight) 
+    
     local function addC(txt, key)
         local b = Instance.new("TextButton", DropdownFrame); b.Size = UDim2.new(1, 0, 0, 35); b.BackgroundColor3 = Color3.fromRGB(40, 40, 45); b.ZIndex = 101
         b.Text = txt..": "..(Checks[key] and "ON" or "OFF"); b.TextColor3 = Checks[key] and Color3.new(0,1,0) or Color3.new(1,0,0)
         b.MouseButton1Click:Connect(function() Checks[key] = not Checks[key]; b.Text = txt..": "..(Checks[key] and "ON" or "OFF"); b.TextColor3 = Checks[key] and Color3.new(0,1,0) or Color3.new(1,0,0) end)
     end
-    addC("ALIVE", "Alive"); addC("TEAM", "Team"); addC("WALL", "Wall")
+    
+    addC("ALIVE", "Alive")
+    if hasTeams then addC("TEAM", "Team") end
+    addC("WALL", "Wall")
 end)
 
 local function updateSelfBtn(btn, state, name)
@@ -252,11 +272,22 @@ hSize.FocusLost:Connect(function() local n = tonumber(hSize.Text) if n then hitb
 local vTog = Instance.new("TextButton", HitPage); vTog.Size = UDim2.new(0, 340, 0, 35); updateHitBtn(vTog, hitboxVisual, "Visualizer"); Instance.new("UICorner", vTog)
 vTog.MouseButton1Click:Connect(function() hitboxVisual = not hitboxVisual; updateHitBtn(vTog, hitboxVisual, "Visualizer"); reapplyHitboxes() end)
 
-local bTog = Instance.new("TextButton", HitPage); bTog.Size = UDim2.new(0, 340, 0, 35); updateHitBtn(bTog, hitboxBillboard, "Box ESP"); Instance.new("UICorner", bTog)
-bTog.MouseButton1Click:Connect(function() hitboxBillboard = not hitboxBillboard; updateHitBtn(bTog, hitboxBillboard, "Box ESP"); reapplyHitboxes() end)
-
 local cTog = Instance.new("TextButton", HitPage); cTog.Size = UDim2.new(0, 340, 0, 35); updateHitBtn(cTog, collisionEnabled, "Collision"); Instance.new("UICorner", cTog)
 cTog.MouseButton1Click:Connect(function() collisionEnabled = not collisionEnabled; updateHitBtn(cTog, collisionEnabled, "Collision"); reapplyHitboxes() end)
+
+local function updateEspBtn(btn, state, txt)
+    btn.BackgroundColor3 = state and Color3.fromRGB(60, 160, 60) or Color3.fromRGB(200, 50, 50)
+    btn.Text = txt .. ": " .. (state and "ON" or "OFF")
+end
+
+local tracerTog = Instance.new("TextButton", EspPage); tracerTog.Size = UDim2.new(0, 340, 0, 35); updateEspBtn(tracerTog, espOptions.tracers, "Tracers"); Instance.new("UICorner", tracerTog)
+tracerTog.MouseButton1Click:Connect(function() espOptions.tracers = not espOptions.tracers; updateEspBtn(tracerTog, espOptions.tracers, "Tracers") end)
+
+local nameTog = Instance.new("TextButton", EspPage); nameTog.Size = UDim2.new(0, 340, 0, 35); updateEspBtn(nameTog, espOptions.names, "Name ESP"); Instance.new("UICorner", nameTog)
+nameTog.MouseButton1Click:Connect(function() espOptions.names = not espOptions.names; updateEspBtn(nameTog, espOptions.names, "Name ESP") end)
+
+local dotTog = Instance.new("TextButton", EspPage); dotTog.Size = UDim2.new(0, 340, 0, 35); updateEspBtn(dotTog, espOptions.dot, "Dot ESP"); Instance.new("UICorner", dotTog)
+dotTog.MouseButton1Click:Connect(function() espOptions.dot = not espOptions.dot; updateEspBtn(dotTog, espOptions.dot, "Dot ESP") end)
 
 table.insert(_Connections, RunService.RenderStepped:Connect(function()
     local char = LocalPlayer.Character
@@ -272,15 +303,89 @@ table.insert(_Connections, RunService.RenderStepped:Connect(function()
         end
     end
     
+    for _, p in pairs(Players:GetPlayers()) do
+        if p ~= LocalPlayer and p.Character then
+            local root = p.Character:FindFirstChild("HumanoidRootPart")
+            local head = p.Character:FindFirstChild("Head")
+            
+            local show = true
+            if Checks.Team and p.Team == LocalPlayer.Team then show = false end
+            
+            if not espCache[p] then espCache[p] = {} end
+            local cache = espCache[p]
+
+            if show and root and (espOptions.tracers or espOptions.names or espOptions.dot) then
+                local pos, onScreen = Camera:WorldToViewportPoint(root.Position)
+                
+                if espOptions.tracers and onScreen then
+                    if not cache.line then 
+                        cache.line = Instance.new("Frame", TracerContainer); cache.line.BackgroundColor3 = Color3.new(1,1,1); cache.line.BorderSizePixel = 0
+                    end
+                    local mouse = UIS:GetMouseLocation()
+                    local p1, p2 = Vector2.new(mouse.X, mouse.Y), Vector2.new(pos.X, pos.Y)
+                    local dist = (p2 - p1).Magnitude
+                    local center = (p1 + p2) / 2
+                    local angle = math.atan2(p2.Y - p1.Y, p2.X - p1.X)
+                    cache.line.Size = UDim2.new(0, dist, 0, 1)
+                    cache.line.Position = UDim2.new(0, center.X, 0, center.Y)
+                    cache.line.Rotation = math.deg(angle)
+                    cache.line.Visible = true
+                else
+                    if cache.line then cache.line.Visible = false end
+                end
+
+                if espOptions.names and head then
+                    if not cache.name then
+                        cache.name = Instance.new("BillboardGui", TracerContainer); cache.name.Size = UDim2.new(0,200,0,50); cache.name.AlwaysOnTop = true
+                        local t = Instance.new("TextLabel", cache.name); t.Size = UDim2.new(1,0,1,0); t.BackgroundTransparency = 1; t.TextColor3 = Color3.new(1,1,1); t.TextStrokeTransparency = 0
+                        t.Text = p.DisplayName; cache.name.Adornee = head
+                    end
+                    cache.name.Enabled = true
+                else
+                    if cache.name then cache.name.Enabled = false end
+                end
+
+                if espOptions.dot and root then
+                    if not cache.dot then
+                        cache.dot = Instance.new("BillboardGui", TracerContainer); cache.dot.Size = UDim2.new(0,10,0,10); cache.dot.AlwaysOnTop = true
+                        local f = Instance.new("Frame", cache.dot); f.Size = UDim2.new(1,0,1,0); f.BackgroundColor3 = Color3.fromRGB(255,50,50); Instance.new("UICorner", f, UDim.new(1,0))
+                        cache.dot.Adornee = root
+                    end
+                    cache.dot.Enabled = true
+                else
+                    if cache.dot then cache.dot.Enabled = false end
+                end
+            else
+                if cache.line then cache.line.Visible = false end
+                if cache.name then cache.name.Enabled = false end
+                if cache.dot then cache.dot.Enabled = false end
+            end
+        else
+            if espCache[p] then
+                if espCache[p].line then espCache[p].line.Visible = false end
+                if espCache[p].name then espCache[p].name.Enabled = false end
+                if espCache[p].dot then espCache[p].dot.Enabled = false end
+            end
+        end
+    end
+    
     if Active then
-        local function isValid(p) return p and p.Character and p.Character:FindFirstChild(TargetPartName) and (not Checks.Alive or (p.Character:FindFirstChildOfClass("Humanoid") and p.Character:FindFirstChildOfClass("Humanoid").Health > 0)) end
+        local function isValid(p) 
+            if not p or not p.Character or not p.Character:FindFirstChild(TargetPartName) then return false end
+            local targetPart = p.Character[TargetPartName]
+            local hum = p.Character:FindFirstChildOfClass("Humanoid")
+            if Checks.Alive and (not hum or hum.Health <= 0) then return false end
+            if Checks.Team and p.Team == LocalPlayer.Team then return false end
+            if Checks.Wall and not isVisible(targetPart) then return false end
+            return true
+        end
         
         if not LockedPlayer then
             local target, dist = nil, math.huge
             for _, p in pairs(Players:GetPlayers()) do
                 if p ~= LocalPlayer and isValid(p) then
                     local pos, onScreen = Camera:WorldToViewportPoint(p.Character[TargetPartName].Position)
-                    if onScreen and (not Checks.Team or p.Team ~= LocalPlayer.Team) then
+                    if onScreen then
                         local mag = (Vector2.new(pos.X, pos.Y) - Vector2.new(Camera.ViewportSize.X/2, Camera.ViewportSize.Y/2)).Magnitude
                         if mag < dist then dist = mag; target = p end
                     end
@@ -290,17 +395,14 @@ table.insert(_Connections, RunService.RenderStepped:Connect(function()
         else
             if not isValid(LockedPlayer) then
                 if Mode == "Toggle" then
-                    if Checks.Alive then
-                        Active = false
-                        LockedPlayer = nil
-                    end
+                    if Checks.Alive then Active = false; LockedPlayer = nil end
                 else
                     LockedPlayer = nil
                 end
             end
         end
         
-        if LockedPlayer and isValid(LockedPlayer) then
+        if LockedPlayer and LockedPlayer.Character and LockedPlayer.Character:FindFirstChild(TargetPartName) then
             local p = LockedPlayer.Character[TargetPartName]
             Camera.CFrame = CFrame.new(Camera.CFrame.Position, p.Position + (p.Velocity * (Prediction / 100)))
         end
@@ -332,13 +434,14 @@ table.insert(_Connections, UIS.InputEnded:Connect(function(input)
 end))
 
 local function switch(btn, page)
-    MainPage.Visible = false; SelfPage.Visible = false; HitPage.Visible = false
-    MainTab.BackgroundColor3 = Color3.fromRGB(35, 35, 40); SelfTab.BackgroundColor3 = Color3.fromRGB(35, 35, 40); HitTab.BackgroundColor3 = Color3.fromRGB(35, 35, 40)
+    MainPage.Visible = false; SelfPage.Visible = false; HitPage.Visible = false; EspPage.Visible = false
+    MainTab.BackgroundColor3 = Color3.fromRGB(35, 35, 40); SelfTab.BackgroundColor3 = Color3.fromRGB(35, 35, 40); HitTab.BackgroundColor3 = Color3.fromRGB(35, 35, 40); EspTab.BackgroundColor3 = Color3.fromRGB(35, 35, 40)
     page.Visible = true; btn.BackgroundColor3 = Color3.fromRGB(50, 50, 60); DropdownFrame.Visible = false
 end
 MainTab.MouseButton1Click:Connect(function() switch(MainTab, MainPage) end)
 SelfTab.MouseButton1Click:Connect(function() switch(SelfTab, SelfPage) end)
 HitTab.MouseButton1Click:Connect(function() switch(HitTab, HitPage) end)
+EspTab.MouseButton1Click:Connect(function() switch(EspTab, EspPage) end)
 
 local dragging, dragStart, startPos
 Main.InputBegan:Connect(function(input) if input.UserInputType == Enum.UserInputType.MouseButton1 and not Sliding then dragging = true; dragStart = input.Position; startPos = Main.Position end end)
