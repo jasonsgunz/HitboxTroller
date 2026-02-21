@@ -33,7 +33,6 @@ local hitboxSize = 8
 local hitboxVisual = false
 local hitboxData = {}
 local collisionEnabled = false
-local HitboxTargetPart = "HumanoidRootPart"
 
 local espCache = {} 
 local _Connections = {}
@@ -79,33 +78,12 @@ end
 
 local function findBestHitboxPart(character)
     if not character then return nil end
-    local part = character:FindFirstChild(HitboxTargetPart)
-    if part and part:IsA("BasePart") then return part end
     local priority = {"HumanoidRootPart","UpperTorso","LowerTorso","Torso","Head"}
     for _,name in ipairs(priority) do
-        local p = character:FindFirstChild(name)
-        if p and p:IsA("BasePart") then return p end
+        local part = character:FindFirstChild(name)
+        if part and part:IsA("BasePart") then return part end
     end
     return character:FindFirstChildOfClass("BasePart")
-end
-
-local function restoreHitbox(plr)
-    local data = hitboxData[plr]
-    if data then
-        if data.conn then data.conn:Disconnect() end
-        if data.viz then data.viz:Destroy() end
-        if data.part and data.part.Parent then
-            data.part.Size = data.origSize
-            data.part.Transparency = data.origTrans
-            data.part.CanCollide = data.origCollide
-            if data.origDecals then
-                for dec, trans in pairs(data.origDecals) do
-                    if dec.Parent then dec.Transparency = trans end
-                end
-            end
-        end
-        hitboxData[plr] = nil
-    end
 end
 
 local function applyHitbox(plr)
@@ -115,35 +93,17 @@ local function applyHitbox(plr)
     local hrp = findBestHitboxPart(char)
     if not hrp then return end
 
-    restoreHitbox(plr)
-
-    local origSize = hrp.Size
-    local origTrans = hrp.Transparency
-    local origCollide = hrp.CanCollide
-    local origDecals = {}
-    
-    for _, v in pairs(hrp:GetChildren()) do
-        if v:IsA("Decal") or v:IsA("Texture") then
-            origDecals[v] = v.Transparency
-        end
+    if hitboxData[plr] then
+        if hitboxData[plr].conn then hitboxData[plr].conn:Disconnect() end
+        if hitboxData[plr].viz then hitboxData[plr].viz:Destroy() end
     end
 
     local viz
     if hitboxVisual then
         viz = Instance.new("Part")
         viz.Size = Vector3.new(hitboxSize, hitboxSize, hitboxSize)
-        viz.Anchored = false
-        viz.CanCollide = false
-        viz.CanTouch = false
-        viz.Transparency = 0.7
-        viz.Color = Color3.fromRGB(255,0,0)
-        viz.Material = Enum.Material.Neon
-        viz.Parent = workspace
-        
-        local weld = Instance.new("WeldConstraint")
-        weld.Part0 = viz
-        weld.Part1 = hrp
-        weld.Parent = viz
+        viz.Anchored = true; viz.CanCollide = false; viz.Transparency = 0.7
+        viz.Color = Color3.fromRGB(255,0,0); viz.Material = Enum.Material.Neon; viz.Parent = workspace
     end
 
     local conn = RunService.RenderStepped:Connect(function()
@@ -151,47 +111,34 @@ local function applyHitbox(plr)
             if viz then viz:Destroy() end
             return
         end
-        
         hrp.Size = Vector3.new(hitboxSize, hitboxSize, hitboxSize)
-        
-        if hrp.Name ~= "HumanoidRootPart" then
-            hrp.Transparency = 1
-            for dec, _ in pairs(origDecals) do
-                if dec.Parent then dec.Transparency = 1 end
-            end
-        end
-        
         hrp.CanCollide = collisionEnabled
-        if viz then viz.Size = hrp.Size end
+        if viz then viz.CFrame = hrp.CFrame; viz.Size = hrp.Size end
     end)
-    
-    hitboxData[plr] = {
-        conn = conn, 
-        viz = viz, 
-        part = hrp, 
-        origSize = origSize, 
-        origTrans = origTrans, 
-        origCollide = origCollide, 
-        origDecals = origDecals
-    }
+    hitboxData[plr] = {conn=conn,viz=viz}
 end
 
 local function reapplyHitboxes()
-    for _, p in pairs(Players:GetPlayers()) do
-        if p ~= LocalPlayer then
-            restoreHitbox(p)
-        end
+    for _,v in pairs(hitboxData) do
+        if v.conn then v.conn:Disconnect() end
+        if v.viz then v.viz:Destroy() end
     end
-    if not hitboxEnabled then return end
-    for _, p in pairs(Players:GetPlayers()) do
-        if p ~= LocalPlayer then
-            applyHitbox(p)
+    hitboxData = {}
+    if not hitboxEnabled then
+        for _,p in pairs(Players:GetPlayers()) do
+            local char = p.Character
+            if char then
+                local hrp = findBestHitboxPart(char)
+                if hrp then hrp.Size = Vector3.new(2,2,1); hrp.CanCollide = true end
+            end
         end
+        return
     end
+    for _,p in pairs(Players:GetPlayers()) do applyHitbox(p) end
 end
 
 local ScreenGui = Instance.new("ScreenGui", LocalPlayer:WaitForChild("PlayerGui"))
-ScreenGui.Name = "Universal_V24_Final"
+ScreenGui.Name = "Universal_V23_FinalFix"
 ScreenGui.ResetOnSpawn = false
 ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Global
 ScreenGui.IgnoreGuiInset = true 
@@ -204,9 +151,8 @@ Instance.new("UICorner", Main).CornerRadius = UDim.new(0, 8)
 local TracerContainer = Instance.new("Frame", ScreenGui)
 TracerContainer.Size = UDim2.new(1,0,1,0); TracerContainer.BackgroundTransparency = 1; TracerContainer.Visible = true
 
-local DropdownFrame = Instance.new("ScrollingFrame", ScreenGui)
+local DropdownFrame = Instance.new("Frame", ScreenGui)
 DropdownFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 35); DropdownFrame.Visible = false; DropdownFrame.ZIndex = 100
-DropdownFrame.BorderSizePixel = 0; DropdownFrame.ScrollBarThickness = 4
 Instance.new("UICorner", DropdownFrame)
 Instance.new("UIListLayout", DropdownFrame).HorizontalAlignment = "Center"
 
@@ -262,11 +208,12 @@ local SliderFillM = Instance.new("Frame", SliderBackM); SliderFillM.Size = UDim2
 SliderBackM.InputBegan:Connect(function(input) if input.UserInputType == Enum.UserInputType.MouseButton1 then SlidingM = true end end)
 UIS.InputChanged:Connect(function(input) 
     if SlidingM and input.UserInputType == Enum.UserInputType.MouseMovement then 
-        local pos = math.clamp((input.Position.X - SliderBackM.AbsolutePosition.X) / SliderBackM.AbsoluteSize.X, 0, 1)
-        SliderFillM.Size = UDim2.new(pos, 0, 1, 0)
-        local val = math.floor(pos * 9) + 1
-        MagTxt.Text = "Lock-On Smoothning: " .. val 
-        Smoothing = (11 - val) / 10 
+local pos = math.clamp((input.Position.X - SliderBackM.AbsolutePosition.X) / SliderBackM.AbsoluteSize.X, 0, 1)
+SliderFillM.Size = UDim2.new(pos, 0, 1, 0)
+
+local val = math.floor(pos * 9) + 1
+MagTxt.Text = "Lock-On Smoothning: " .. val 
+Smoothing = (11 - val) / 10 
     end 
 end)
 
@@ -288,13 +235,10 @@ ModeBtn.MouseButton1Click:Connect(function() Mode = (Mode == "Hold" and "Toggle"
 local PartBtn = ModeBtn:Clone(); PartBtn.Parent = MainPage; PartBtn.Text = "TARGET: HumanoidRootPart"
 local ChecksBtn = ModeBtn:Clone(); ChecksBtn.Parent = MainPage; ChecksBtn.Text = "CHECKS"
 
-local function OpenDrop(btn, canvasHeight)
+local function OpenDrop(btn, height)
     for _, v in pairs(DropdownFrame:GetChildren()) do if v:IsA("TextButton") then v:Destroy() end end
     DropdownFrame.Position = UDim2.fromOffset(btn.AbsolutePosition.X + (btn.AbsoluteSize.X / 2) - 100, btn.AbsolutePosition.Y + btn.AbsoluteSize.Y + 5)
-    local viewHeight = math.min(canvasHeight, 140)
-    DropdownFrame.Size = UDim2.fromOffset(200, viewHeight)
-    DropdownFrame.CanvasSize = UDim2.new(0, 0, 0, canvasHeight)
-    DropdownFrame.Visible = not DropdownFrame.Visible
+    DropdownFrame.Size = UDim2.fromOffset(200, height); DropdownFrame.Visible = not DropdownFrame.Visible
 end
 
 PartBtn.MouseButton1Click:Connect(function() 
@@ -370,51 +314,6 @@ hTog.MouseButton1Click:Connect(function() hitboxEnabled = not hitboxEnabled; upd
 
 local hSize = Instance.new("TextBox", HitPage); hSize.Size = UDim2.new(0, 340, 0, 35); hSize.BackgroundColor3 = Color3.fromRGB(45, 45, 50); hSize.Text = tostring(hitboxSize); hSize.TextColor3 = Color3.new(1,1,1); Instance.new("UICorner", hSize)
 hSize.FocusLost:Connect(function() local n = tonumber(hSize.Text) if n then hitboxSize = n; reapplyHitboxes() end end)
-
-local hPartBtn = Instance.new("TextButton", HitPage)
-hPartBtn.Size = UDim2.new(0, 340, 0, 35)
-hPartBtn.BackgroundColor3 = Color3.fromRGB(45, 45, 50)
-hPartBtn.Text = "TARGET: " .. HitboxTargetPart
-hPartBtn.TextColor3 = Color3.new(1,1,1)
-Instance.new("UICorner", hPartBtn)
-
-hPartBtn.MouseButton1Click:Connect(function()
-    local R6 = {"Head", "Torso", "Left Arm", "Right Arm", "Left Leg", "Right Leg", "HumanoidRootPart"}
-    local R15 = {"Head", "UpperTorso", "LowerTorso", "LeftUpperArm", "LeftLowerArm", "LeftHand", "RightUpperArm", "RightLowerArm", "RightHand", "HumanoidRootPart"}
-    local found = {}
-    local added = {}
-    
-    for _, p in pairs(Players:GetPlayers()) do
-        if p.Character and p.Character:FindFirstChildOfClass("Humanoid") then
-            local list = p.Character.Humanoid.RigType == Enum.HumanoidRigType.R15 and R15 or R6
-            for _, n in ipairs(list) do
-                if p.Character:FindFirstChild(n) and not added[n] then
-                    added[n] = true
-                    table.insert(found, n)
-                end
-            end
-        end
-    end
-    
-    if #found == 0 then found = {"HumanoidRootPart", "Head"} end
-    
-    OpenDrop(hPartBtn, #found * 35)
-    for _, n in ipairs(found) do
-        local b = Instance.new("TextButton", DropdownFrame)
-        b.Size = UDim2.new(1, 0, 0, 35)
-        b.BackgroundColor3 = Color3.fromRGB(40, 40, 45)
-        b.Text = n
-        b.TextColor3 = Color3.new(1,1,1)
-        b.ZIndex = 101
-        
-        b.MouseButton1Click:Connect(function()
-            HitboxTargetPart = n
-            hPartBtn.Text = "TARGET: " .. n
-            DropdownFrame.Visible = false
-            reapplyHitboxes()
-        end)
-    end
-end)
 
 local vTog = Instance.new("TextButton", HitPage); vTog.Size = UDim2.new(0, 340, 0, 35); updateHitBtn(vTog, hitboxVisual, "Visualizer"); Instance.new("UICorner", vTog)
 vTog.MouseButton1Click:Connect(function() hitboxVisual = not hitboxVisual; updateHitBtn(vTog, hitboxVisual, "Visualizer"); reapplyHitboxes() end)
@@ -566,8 +465,8 @@ Close.MouseButton1Click:Connect(function()
     if hum then hum.WalkSpeed = 16; hum.JumpPower = 50 end
 end)
 
-Players.PlayerAdded:Connect(function(p) p.CharacterAdded:Connect(function() task.wait(0.5); if hitboxEnabled then applyHitbox(p) end end) end)
-for _,p in pairs(Players:GetPlayers()) do p.CharacterAdded:Connect(function() task.wait(0.5); if hitboxEnabled then applyHitbox(p) end end) end
+Players.PlayerAdded:Connect(function(p) p.CharacterAdded:Connect(function() task.wait(0.1); applyHitbox(p) end) end)
+for _,p in pairs(Players:GetPlayers()) do p.CharacterAdded:Connect(function() task.wait(0.1); applyHitbox(p) end) end
 
 Players.PlayerRemoving:Connect(function(p)
     if espCache[p] then
@@ -576,7 +475,11 @@ Players.PlayerRemoving:Connect(function(p)
         if espCache[p].dot then espCache[p].dot:Destroy() end
         espCache[p] = nil
     end
-    restoreHitbox(p)
+    if hitboxData[p] then
+        if hitboxData[p].conn then hitboxData[p].conn:Disconnect() end
+        if hitboxData[p].viz then hitboxData[p].viz:Destroy() end
+        hitboxData[p] = nil
+    end
 end)
 
 LocalPlayer.CharacterAdded:Connect(function()
@@ -587,7 +490,7 @@ end)
 
 pcall(function()
     game:GetService("StarterGui"):SetCore("SendNotification", {
-        Title = "VERSION V.3.3",
+        Title = "VERSION V.3.2",
         Text = "This Script was made by jasonsgunz on Github.",
         Icon = "rbxassetid://6031094670",
         Duration = 6
