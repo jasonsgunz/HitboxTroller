@@ -1,5 +1,5 @@
-# UPDATE LOG V3.3!
+# UPDATE LOG V3.2 REVERT!
 
--- Hitbox now scans if the game uses R6 or R15 rigs and which parts are available and u can basically now choose which part to resize.
+-- it was acctually hell trying to make it work so im thinking of new Things.
 
 # NOTE! THIS SCRIPT MIGHT NOT WORK IN EVERY GAME I WILL PUT MORE EFFORT FOR GAMES INTO THIS IF ANYONE IS INTERESTED TO TEST GAMES FOR ME, DM s9q9 ON DISCORD.
