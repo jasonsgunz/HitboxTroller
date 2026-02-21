@@ -132,8 +132,18 @@ local function applyHitbox(plr)
     if hitboxVisual then
         viz = Instance.new("Part")
         viz.Size = Vector3.new(hitboxSize, hitboxSize, hitboxSize)
-        viz.Anchored = true; viz.CanCollide = false; viz.Transparency = 0.7
-        viz.Color = Color3.fromRGB(255,0,0); viz.Material = Enum.Material.Neon; viz.Parent = workspace
+        viz.Anchored = false
+        viz.CanCollide = false
+        viz.CanTouch = false
+        viz.Transparency = 0.7
+        viz.Color = Color3.fromRGB(255,0,0)
+        viz.Material = Enum.Material.Neon
+        viz.Parent = workspace
+        
+        local weld = Instance.new("WeldConstraint")
+        weld.Part0 = viz
+        weld.Part1 = hrp
+        weld.Parent = viz
     end
 
     local conn = RunService.RenderStepped:Connect(function()
@@ -141,6 +151,7 @@ local function applyHitbox(plr)
             if viz then viz:Destroy() end
             return
         end
+        
         hrp.Size = Vector3.new(hitboxSize, hitboxSize, hitboxSize)
         
         if hrp.Name ~= "HumanoidRootPart" then
@@ -151,7 +162,7 @@ local function applyHitbox(plr)
         end
         
         hrp.CanCollide = collisionEnabled
-        if viz then viz.CFrame = hrp.CFrame; viz.Size = hrp.Size end
+        if viz then viz.Size = hrp.Size end
     end)
     
     hitboxData[plr] = {
@@ -173,12 +184,14 @@ local function reapplyHitboxes()
     end
     if not hitboxEnabled then return end
     for _, p in pairs(Players:GetPlayers()) do
-        applyHitbox(p)
+        if p ~= LocalPlayer then
+            applyHitbox(p)
+        end
     end
 end
 
 local ScreenGui = Instance.new("ScreenGui", LocalPlayer:WaitForChild("PlayerGui"))
-ScreenGui.Name = "Universal_V23_FinalFix"
+ScreenGui.Name = "Universal_V24_Final"
 ScreenGui.ResetOnSpawn = false
 ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Global
 ScreenGui.IgnoreGuiInset = true 
@@ -249,12 +262,11 @@ local SliderFillM = Instance.new("Frame", SliderBackM); SliderFillM.Size = UDim2
 SliderBackM.InputBegan:Connect(function(input) if input.UserInputType == Enum.UserInputType.MouseButton1 then SlidingM = true end end)
 UIS.InputChanged:Connect(function(input) 
     if SlidingM and input.UserInputType == Enum.UserInputType.MouseMovement then 
-local pos = math.clamp((input.Position.X - SliderBackM.AbsolutePosition.X) / SliderBackM.AbsoluteSize.X, 0, 1)
-SliderFillM.Size = UDim2.new(pos, 0, 1, 0)
-
-local val = math.floor(pos * 9) + 1
-MagTxt.Text = "Lock-On Smoothning: " .. val 
-Smoothing = (11 - val) / 10 
+        local pos = math.clamp((input.Position.X - SliderBackM.AbsolutePosition.X) / SliderBackM.AbsoluteSize.X, 0, 1)
+        SliderFillM.Size = UDim2.new(pos, 0, 1, 0)
+        local val = math.floor(pos * 9) + 1
+        MagTxt.Text = "Lock-On Smoothning: " .. val 
+        Smoothing = (11 - val) / 10 
     end 
 end)
 
@@ -361,7 +373,7 @@ hSize.FocusLost:Connect(function() local n = tonumber(hSize.Text) if n then hitb
 
 local hPartBtn = Instance.new("TextButton", HitPage)
 hPartBtn.Size = UDim2.new(0, 340, 0, 35)
-hPartBtn.BackgroundColor3 = Color3.fromRGB(200, 50, 50)
+hPartBtn.BackgroundColor3 = Color3.fromRGB(45, 45, 50)
 hPartBtn.Text = "TARGET: " .. HitboxTargetPart
 hPartBtn.TextColor3 = Color3.new(1,1,1)
 Instance.new("UICorner", hPartBtn)
@@ -554,8 +566,8 @@ Close.MouseButton1Click:Connect(function()
     if hum then hum.WalkSpeed = 16; hum.JumpPower = 50 end
 end)
 
-Players.PlayerAdded:Connect(function(p) p.CharacterAdded:Connect(function() task.wait(0.5); applyHitbox(p) end) end)
-for _,p in pairs(Players:GetPlayers()) do p.CharacterAdded:Connect(function() task.wait(0.5); applyHitbox(p) end) end
+Players.PlayerAdded:Connect(function(p) p.CharacterAdded:Connect(function() task.wait(0.5); if hitboxEnabled then applyHitbox(p) end end) end)
+for _,p in pairs(Players:GetPlayers()) do p.CharacterAdded:Connect(function() task.wait(0.5); if hitboxEnabled then applyHitbox(p) end end) end
 
 Players.PlayerRemoving:Connect(function(p)
     if espCache[p] then
@@ -575,7 +587,7 @@ end)
 
 pcall(function()
     game:GetService("StarterGui"):SetCore("SendNotification", {
-        Title = "VERSION V.3.2",
+        Title = "VERSION V.3.3",
         Text = "This Script was made by jasonsgunz on Github.",
         Icon = "rbxassetid://6031094670",
         Duration = 6
