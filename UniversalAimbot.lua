@@ -50,14 +50,14 @@ local function isVisible(targetPart)
     return result == nil 
 end
 
-local function isValid(p) 
+local function isValid(p, skipWallCheck) 
     if not p or not p.Character or not p.Character:FindFirstChild(TargetPartName) then return false end
     local targetPart = p.Character[TargetPartName]
     local hum = p.Character:FindFirstChildOfClass("Humanoid")
 
     if Checks.Alive and (not hum or hum.Health <= 0) then return false end
     if Checks.Team and p.Team == LocalPlayer.Team then return false end
-    if Checks.Wall and not isVisible(targetPart) then return false end
+    if not skipWallCheck and Checks.Wall and not isVisible(targetPart) then return false end
 
     return true
 end
@@ -65,7 +65,7 @@ end
 local function findBestTarget()
     local target, dist = nil, math.huge
     for _, p in pairs(Players:GetPlayers()) do
-        if p ~= LocalPlayer and isValid(p) then
+        if p ~= LocalPlayer and isValid(p, false) then
             local pos, onScreen = Camera:WorldToViewportPoint(p.Character[TargetPartName].Position)
             if onScreen then
                 local mag = (Vector2.new(pos.X, pos.Y) - Vector2.new(Camera.ViewportSize.X/2, Camera.ViewportSize.Y/2)).Magnitude
@@ -378,12 +378,14 @@ table.insert(_Connections, RunService.RenderStepped:Connect(function()
                 else if cache.line then cache.line.Visible = false end end
 
                 if espOptions.names and head then
-                    if not cache.name then cache.name = Instance.new("BillboardGui", TracerContainer); cache.name.Size = UDim2.new(0,200,0,50); cache.name.AlwaysOnTop = true; local t = Instance.new("TextLabel", cache.name); t.Size = UDim2.new(1,0,1,0); t.BackgroundTransparency = 1; t.TextColor3 = Color3.new(1,1,1); t.TextStrokeTransparency = 0; t.Text = p.DisplayName; cache.name.Adornee = head end
+                    if not cache.name then cache.name = Instance.new("BillboardGui", TracerContainer); cache.name.Size = UDim2.new(0,200,0,50); cache.name.AlwaysOnTop = true; local t = Instance.new("TextLabel", cache.name); t.Size = UDim2.new(1,0,1,0); t.BackgroundTransparency = 1; t.TextColor3 = Color3.new(1,1,1); t.TextStrokeTransparency = 0; t.Text = p.DisplayName; end
+                    cache.name.Adornee = head
                     cache.name.Enabled = true
                 else if cache.name then cache.name.Enabled = false end end
 
                 if espOptions.dot and root then
-                    if not cache.dot then cache.dot = Instance.new("BillboardGui", TracerContainer); cache.dot.Size = UDim2.new(0,10,0,10); cache.dot.AlwaysOnTop = true; local f = Instance.new("Frame", cache.dot); f.Size = UDim2.new(1,0,1,0); f.BackgroundColor3 = Color3.fromRGB(255,50,50); Instance.new("UICorner", f, UDim.new(1,0)); cache.dot.Adornee = root end
+                    if not cache.dot then cache.dot = Instance.new("BillboardGui", TracerContainer); cache.dot.Size = UDim2.new(0,10,0,10); cache.dot.AlwaysOnTop = true; local f = Instance.new("Frame", cache.dot); f.Size = UDim2.new(1,0,1,0); f.BackgroundColor3 = Color3.fromRGB(255,50,50); Instance.new("UICorner", f, UDim.new(1,0)); end
+                    cache.dot.Adornee = root
                     cache.dot.Enabled = true
                 else if cache.dot then cache.dot.Enabled = false end end
             else
@@ -395,7 +397,7 @@ table.insert(_Connections, RunService.RenderStepped:Connect(function()
     end
 
     if Active then
-        if isValid(LockedPlayer) then
+        if isValid(LockedPlayer, true) then
             local pPart = LockedPlayer.Character[TargetPartName]
             local targetCF = CFrame.new(Camera.CFrame.Position, pPart.Position + (pPart.Velocity * (Prediction / 100)))
             Camera.CFrame = Camera.CFrame:Lerp(targetCF, Smoothing)
