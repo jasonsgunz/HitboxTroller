@@ -138,7 +138,7 @@ local function reapplyHitboxes()
 end
 
 local ScreenGui = Instance.new("ScreenGui", LocalPlayer:WaitForChild("PlayerGui"))
-ScreenGui.Name = "Universal_V25_SettingsClean"
+ScreenGui.Name = "Universal_V26_FinalUIFix"
 ScreenGui.ResetOnSpawn = false
 ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Global
 ScreenGui.IgnoreGuiInset = true 
@@ -160,22 +160,26 @@ local Title = Instance.new("TextLabel", Main)
 Title.Size = UDim2.new(1, -60, 0, 35); Title.Position = UDim2.new(0, 15, 0, 0); Title.BackgroundTransparency = 1
 Title.Text = "UniversalAimbot"; Title.TextColor3 = Color3.new(1, 1, 1); Title.Font = "GothamBold"; Title.TextSize = 14; Title.TextXAlignment = "Left"
 
--- CLOSE BUTTON
+--- UI BUTTONS SECTION ---
+
+-- Close Button
 local Close = Instance.new("TextButton", Main)
-Close.Size = UDim2.new(0, 25, 0, 25); Close.Position = UDim2.new(1, -30, 0, 5); Close.BackgroundColor3 = Color3.fromRGB(200, 50, 50); Close.Text = "X"; Close.TextColor3 = Color3.new(1, 1, 1); Close.ZIndex = 5
+Close.Size = UDim2.new(0, 25, 0, 25); Close.Position = UDim2.new(1, -30, 0, 5); Close.BackgroundColor3 = Color3.fromRGB(200, 50, 50); Close.Text = "X"; Close.TextColor3 = Color3.new(1, 1, 1); Close.ZIndex = 10
 Instance.new("UICorner", Close).CornerRadius = UDim.new(0, 4)
 
--- GEAR ICON (Transparent background as requested)
+-- Gear Icon (Invisible Button Box, Visible Gear)
 local SettingsBtn = Instance.new("ImageButton", Main)
 SettingsBtn.Size = UDim2.new(0, 25, 0, 25); SettingsBtn.Position = UDim2.new(1, -60, 0, 5)
-SettingsBtn.BackgroundTransparency = 1 -- NO VISIBLE RENDERED BACKGROUND
-SettingsBtn.Image = "rbxassetid://3459878578"
-SettingsBtn.ZIndex = 5
+SettingsBtn.BackgroundTransparency = 1 -- Hide the square background
+SettingsBtn.Image = "rbxassetid://3459878578" -- The Gear Decal
+SettingsBtn.ImageTransparency = 0 -- Ensure the gear is fully visible
+SettingsBtn.ZIndex = 10
+SettingsBtn.BorderSizePixel = 0
 
--- SETTINGS OVERLAY
+-- Settings Overlay
 local SettingsOverlay = Instance.new("Frame", Main)
 SettingsOverlay.Size = UDim2.new(1, 0, 1, 0); SettingsOverlay.BackgroundColor3 = Color3.fromRGB(25, 25, 30)
-SettingsOverlay.ZIndex = 100; SettingsOverlay.Visible = false; SettingsOverlay.Active = true -- Blocks interaction with background
+SettingsOverlay.ZIndex = 100; SettingsOverlay.Visible = false; SettingsOverlay.Active = true
 Instance.new("UICorner", SettingsOverlay).CornerRadius = UDim.new(0, 8)
 
 local OverlayClose = Instance.new("TextButton", SettingsOverlay)
@@ -186,7 +190,7 @@ local ToggleUITxt = Instance.new("TextLabel", SettingsOverlay)
 ToggleUITxt.Size = UDim2.new(0, 150, 0, 35); ToggleUITxt.Position = UDim2.new(0, 20, 0, 50); ToggleUITxt.BackgroundTransparency = 1; ToggleUITxt.Text = "Toggle UI Keybind:"; ToggleUITxt.TextColor3 = Color3.new(1,1,1); ToggleUITxt.Font = "Gotham"; ToggleUITxt.TextXAlignment = "Left"; ToggleUITxt.ZIndex = 101
 
 local ToggleUIBtn = Instance.new("TextButton", SettingsOverlay)
-ToggleUIBtn.Size = UDim2.new(0, 80, 0, 35); ToggleUIBtn.Position = UDim2.new(0, 150, 0, 50); ToggleUIBtn.BackgroundColor3 = Color3.fromRGB(45, 45, 50); ToggleUIBtn.Text = "[P]"; ToggleUIBtn.TextColor3 = Color3.new(1, 1, 1); ToggleUIBtn.ZIndex = 101
+ToggleUIBtn.Size = UDim2.new(0, 80, 0, 35); ToggleUIBtn.Position = UDim2.new(0, 160, 0, 50); ToggleUIBtn.BackgroundColor3 = Color3.fromRGB(45, 45, 50); ToggleUIBtn.Text = "[P]"; ToggleUIBtn.TextColor3 = Color3.new(1, 1, 1); ToggleUIBtn.ZIndex = 101
 Instance.new("UICorner", ToggleUIBtn)
 
 local UIToggleKey = Enum.KeyCode.P
@@ -195,6 +199,8 @@ local SettingUIToggle = false
 SettingsBtn.MouseButton1Click:Connect(function() SettingsOverlay.Visible = true end)
 OverlayClose.MouseButton1Click:Connect(function() SettingsOverlay.Visible = false end)
 ToggleUIBtn.MouseButton1Click:Connect(function() SettingUIToggle = true; ToggleUIBtn.Text = "[...]" end)
+
+--------------------------
 
 local TabHolder = Instance.new("Frame", Main)
 TabHolder.Size = UDim2.new(1, -20, 0, 30); TabHolder.Position = UDim2.new(0, 10, 0, 35); TabHolder.BackgroundTransparency = 1
