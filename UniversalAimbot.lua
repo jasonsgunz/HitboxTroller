@@ -138,7 +138,7 @@ local function reapplyHitboxes()
 end
 
 local ScreenGui = Instance.new("ScreenGui", LocalPlayer:WaitForChild("PlayerGui"))
-ScreenGui.Name = "Universal_V23_FinalFix"
+ScreenGui.Name = "Universal_V25_SettingsClean"
 ScreenGui.ResetOnSpawn = false
 ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Global
 ScreenGui.IgnoreGuiInset = true 
@@ -152,7 +152,7 @@ local TracerContainer = Instance.new("Frame", ScreenGui)
 TracerContainer.Size = UDim2.new(1,0,1,0); TracerContainer.BackgroundTransparency = 1; TracerContainer.Visible = true
 
 local DropdownFrame = Instance.new("Frame", ScreenGui)
-DropdownFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 35); DropdownFrame.Visible = false; DropdownFrame.ZIndex = 100
+DropdownFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 35); DropdownFrame.Visible = false; DropdownFrame.ZIndex = 110
 Instance.new("UICorner", DropdownFrame)
 Instance.new("UIListLayout", DropdownFrame).HorizontalAlignment = "Center"
 
@@ -160,28 +160,33 @@ local Title = Instance.new("TextLabel", Main)
 Title.Size = UDim2.new(1, -60, 0, 35); Title.Position = UDim2.new(0, 15, 0, 0); Title.BackgroundTransparency = 1
 Title.Text = "UniversalAimbot"; Title.TextColor3 = Color3.new(1, 1, 1); Title.Font = "GothamBold"; Title.TextSize = 14; Title.TextXAlignment = "Left"
 
+-- CLOSE BUTTON
 local Close = Instance.new("TextButton", Main)
-Close.Size = UDim2.new(0, 25, 0, 25); Close.Position = UDim2.new(1, -30, 0, 5); Close.BackgroundColor3 = Color3.fromRGB(200, 50, 50); Close.Text = "X"; Close.TextColor3 = Color3.new(1, 1, 1)
+Close.Size = UDim2.new(0, 25, 0, 25); Close.Position = UDim2.new(1, -30, 0, 5); Close.BackgroundColor3 = Color3.fromRGB(200, 50, 50); Close.Text = "X"; Close.TextColor3 = Color3.new(1, 1, 1); Close.ZIndex = 5
 Instance.new("UICorner", Close).CornerRadius = UDim.new(0, 4)
 
--- NEW SETTINGS BUTTON & OVERLAY ADDITIONS
+-- GEAR ICON (Transparent background as requested)
 local SettingsBtn = Instance.new("ImageButton", Main)
-SettingsBtn.Size = UDim2.new(0, 25, 0, 25); SettingsBtn.Position = UDim2.new(1, -60, 0, 5); SettingsBtn.BackgroundColor3 = Color3.fromRGB(45, 45, 50); SettingsBtn.Image = "rbxassetid://3459878578"
-Instance.new("UICorner", SettingsBtn).CornerRadius = UDim.new(0, 4)
+SettingsBtn.Size = UDim2.new(0, 25, 0, 25); SettingsBtn.Position = UDim2.new(1, -60, 0, 5)
+SettingsBtn.BackgroundTransparency = 1 -- NO VISIBLE RENDERED BACKGROUND
+SettingsBtn.Image = "rbxassetid://3459878578"
+SettingsBtn.ZIndex = 5
 
+-- SETTINGS OVERLAY
 local SettingsOverlay = Instance.new("Frame", Main)
-SettingsOverlay.Size = UDim2.new(1, 0, 1, 0); SettingsOverlay.BackgroundColor3 = Color3.fromRGB(25, 25, 30); SettingsOverlay.ZIndex = 10; SettingsOverlay.Visible = false; SettingsOverlay.Active = true
+SettingsOverlay.Size = UDim2.new(1, 0, 1, 0); SettingsOverlay.BackgroundColor3 = Color3.fromRGB(25, 25, 30)
+SettingsOverlay.ZIndex = 100; SettingsOverlay.Visible = false; SettingsOverlay.Active = true -- Blocks interaction with background
 Instance.new("UICorner", SettingsOverlay).CornerRadius = UDim.new(0, 8)
 
 local OverlayClose = Instance.new("TextButton", SettingsOverlay)
-OverlayClose.Size = UDim2.new(0, 50, 0, 25); OverlayClose.Position = UDim2.new(1, -55, 0, 5); OverlayClose.BackgroundColor3 = Color3.fromRGB(200, 50, 50); OverlayClose.Text = "CLOSE"; OverlayClose.TextColor3 = Color3.new(1, 1, 1); OverlayClose.ZIndex = 11; OverlayClose.Font = "GothamBold"; OverlayClose.TextSize = 10
+OverlayClose.Size = UDim2.new(0, 50, 0, 20); OverlayClose.Position = UDim2.new(1, -55, 0, 5); OverlayClose.BackgroundColor3 = Color3.fromRGB(200, 50, 50); OverlayClose.Text = "CLOSE"; OverlayClose.TextColor3 = Color3.new(1, 1, 1); OverlayClose.ZIndex = 101; OverlayClose.Font = "GothamBold"; OverlayClose.TextSize = 10
 Instance.new("UICorner", OverlayClose).CornerRadius = UDim.new(0, 4)
 
 local ToggleUITxt = Instance.new("TextLabel", SettingsOverlay)
-ToggleUITxt.Size = UDim2.new(0, 150, 0, 35); ToggleUITxt.Position = UDim2.new(0, 20, 0, 50); ToggleUITxt.BackgroundTransparency = 1; ToggleUITxt.Text = "Toggle UI Keybind:"; ToggleUITxt.TextColor3 = Color3.new(1,1,1); ToggleUITxt.Font = "Gotham"; ToggleUITxt.TextXAlignment = "Left"; ToggleUITxt.ZIndex = 11
+ToggleUITxt.Size = UDim2.new(0, 150, 0, 35); ToggleUITxt.Position = UDim2.new(0, 20, 0, 50); ToggleUITxt.BackgroundTransparency = 1; ToggleUITxt.Text = "Toggle UI Keybind:"; ToggleUITxt.TextColor3 = Color3.new(1,1,1); ToggleUITxt.Font = "Gotham"; ToggleUITxt.TextXAlignment = "Left"; ToggleUITxt.ZIndex = 101
 
 local ToggleUIBtn = Instance.new("TextButton", SettingsOverlay)
-ToggleUIBtn.Size = UDim2.new(0, 80, 0, 35); ToggleUIBtn.Position = UDim2.new(0, 150, 0, 50); ToggleUIBtn.BackgroundColor3 = Color3.fromRGB(45, 45, 50); ToggleUIBtn.Text = "[P]"; ToggleUIBtn.TextColor3 = Color3.new(1, 1, 1); ToggleUIBtn.ZIndex = 11
+ToggleUIBtn.Size = UDim2.new(0, 80, 0, 35); ToggleUIBtn.Position = UDim2.new(0, 150, 0, 50); ToggleUIBtn.BackgroundColor3 = Color3.fromRGB(45, 45, 50); ToggleUIBtn.Text = "[P]"; ToggleUIBtn.TextColor3 = Color3.new(1, 1, 1); ToggleUIBtn.ZIndex = 101
 Instance.new("UICorner", ToggleUIBtn)
 
 local UIToggleKey = Enum.KeyCode.P
@@ -190,7 +195,6 @@ local SettingUIToggle = false
 SettingsBtn.MouseButton1Click:Connect(function() SettingsOverlay.Visible = true end)
 OverlayClose.MouseButton1Click:Connect(function() SettingsOverlay.Visible = false end)
 ToggleUIBtn.MouseButton1Click:Connect(function() SettingUIToggle = true; ToggleUIBtn.Text = "[...]" end)
--- END NEW SETTINGS ADDITIONS
 
 local TabHolder = Instance.new("Frame", Main)
 TabHolder.Size = UDim2.new(1, -20, 0, 30); TabHolder.Position = UDim2.new(0, 10, 0, 35); TabHolder.BackgroundTransparency = 1
@@ -236,21 +240,15 @@ local SliderFillM = Instance.new("Frame", SliderBackM); SliderFillM.Size = UDim2
 SliderBackM.InputBegan:Connect(function(input) if input.UserInputType == Enum.UserInputType.MouseButton1 then SlidingM = true end end)
 UIS.InputChanged:Connect(function(input) 
     if SlidingM and input.UserInputType == Enum.UserInputType.MouseMovement then 
-local pos = math.clamp((input.Position.X - SliderBackM.AbsolutePosition.X) / SliderBackM.AbsoluteSize.X, 0, 1)
-SliderFillM.Size = UDim2.new(pos, 0, 1, 0)
-
-local val = math.floor(pos * 9) + 1
-MagTxt.Text = "Lock-On Smoothning: " .. val 
-Smoothing = (11 - val) / 10 
+        local pos = math.clamp((input.Position.X - SliderBackM.AbsolutePosition.X) / SliderBackM.AbsoluteSize.X, 0, 1)
+        SliderFillM.Size = UDim2.new(pos, 0, 1, 0)
+        local val = math.floor(pos * 9) + 1
+        MagTxt.Text = "Lock-On Smoothning: " .. val 
+        Smoothing = (11 - val) / 10 
     end 
 end)
 
-UIS.InputEnded:Connect(function(input) 
-    if input.UserInputType == Enum.UserInputType.MouseButton1 then 
-        Sliding = false 
-        SlidingM = false
-    end 
-end)
+UIS.InputEnded:Connect(function(input) if input.UserInputType == Enum.UserInputType.MouseButton1 then Sliding = false; SlidingM = false end end)
 
 local BindRow = Instance.new("Frame", MainPage); BindRow.Size = UDim2.new(0, 340, 0, 35); BindRow.BackgroundTransparency = 1
 local BindTxt = Instance.new("TextLabel", BindRow); BindTxt.Size = UDim2.new(0, 100, 1, 0); BindTxt.BackgroundTransparency = 1; BindTxt.Text = "Keybind:"; BindTxt.TextColor3 = Color3.new(1,1,1); BindTxt.Font = "Gotham"; BindTxt.TextXAlignment = "Left"
@@ -272,7 +270,7 @@ end
 PartBtn.MouseButton1Click:Connect(function() 
     OpenDrop(PartBtn, 105) 
     for _, n in pairs({"HumanoidRootPart", "UpperTorso", "Head"}) do 
-        local b = Instance.new("TextButton", DropdownFrame); b.Size = UDim2.new(1, 0, 0, 35); b.BackgroundColor3 = Color3.fromRGB(40, 40, 45); b.Text = n; b.TextColor3 = Color3.new(1,1,1); b.ZIndex = 101
+        local b = Instance.new("TextButton", DropdownFrame); b.Size = UDim2.new(1, 0, 0, 35); b.BackgroundColor3 = Color3.fromRGB(40, 40, 45); b.Text = n; b.TextColor3 = Color3.new(1,1,1); b.ZIndex = 111
         b.MouseButton1Click:Connect(function() TargetPartName = n; PartBtn.Text = "TARGET: "..n; DropdownFrame.Visible = false end)
     end 
 end)
@@ -281,7 +279,7 @@ ChecksBtn.MouseButton1Click:Connect(function()
     local hasTeams = #Teams:GetTeams() > 0
     OpenDrop(ChecksBtn, hasTeams and 105 or 70) 
     local function addC(txt, key)
-        local b = Instance.new("TextButton", DropdownFrame); b.Size = UDim2.new(1, 0, 0, 35); b.BackgroundColor3 = Color3.fromRGB(40, 40, 45); b.ZIndex = 101
+        local b = Instance.new("TextButton", DropdownFrame); b.Size = UDim2.new(1, 0, 0, 35); b.BackgroundColor3 = Color3.fromRGB(40, 40, 45); b.ZIndex = 111
         b.Text = txt..": "..(Checks[key] and "ON" or "OFF"); b.TextColor3 = Checks[key] and Color3.new(0,1,0) or Color3.new(1,0,0)
         b.MouseButton1Click:Connect(function() Checks[key] = not Checks[key]; b.Text = txt..": "..(Checks[key] and "ON" or "OFF"); b.TextColor3 = Checks[key] and Color3.new(0,1,0) or Color3.new(1,0,0) end)
     end
@@ -407,14 +405,12 @@ table.insert(_Connections, RunService.RenderStepped:Connect(function()
 
                 if espOptions.names and head then
                     if not cache.name then cache.name = Instance.new("BillboardGui", TracerContainer); cache.name.Size = UDim2.new(0,200,0,50); cache.name.AlwaysOnTop = true; local t = Instance.new("TextLabel", cache.name); t.Size = UDim2.new(1,0,1,0); t.BackgroundTransparency = 1; t.TextColor3 = Color3.new(1,1,1); t.TextStrokeTransparency = 0; t.Text = p.DisplayName; end
-                    cache.name.Adornee = head
-                    cache.name.Enabled = true
+                    cache.name.Adornee = head; cache.name.Enabled = true
                 else if cache.name then cache.name.Enabled = false end end
 
                 if espOptions.dot and root then
                     if not cache.dot then cache.dot = Instance.new("BillboardGui", TracerContainer); cache.dot.Size = UDim2.new(0,10,0,10); cache.dot.AlwaysOnTop = true; local f = Instance.new("Frame", cache.dot); f.Size = UDim2.new(1,0,1,0); f.BackgroundColor3 = Color3.fromRGB(255,50,50); Instance.new("UICorner", f, UDim.new(1,0)); end
-                    cache.dot.Adornee = root
-                    cache.dot.Enabled = true
+                    cache.dot.Adornee = root; cache.dot.Enabled = true
                 else if cache.dot then cache.dot.Enabled = false end end
             else
                 if cache.line then cache.line.Visible = false end
@@ -429,17 +425,11 @@ table.insert(_Connections, RunService.RenderStepped:Connect(function()
             local pPart = LockedPlayer.Character[TargetPartName]
             local targetCF = CFrame.new(Camera.CFrame.Position, pPart.Position + (pPart.Velocity * (Prediction / 100)))
             Camera.CFrame = Camera.CFrame:Lerp(targetCF, Smoothing)
-        else
-            Active = false
-            LockedPlayer = nil
-        end
-    else
-        LockedPlayer = nil
-    end
+        else Active = false; LockedPlayer = nil end
+    else LockedPlayer = nil end
 end))
 
 table.insert(_Connections, UIS.InputBegan:Connect(function(input, gp)
-    -- NEW TOGGLE CHECK
     if SettingUIToggle then UIToggleKey = input.KeyCode; ToggleUIBtn.Text = "["..input.KeyCode.Name:upper().."]"; SettingUIToggle = false; return end
     if SettingKey then Keybind = input.KeyCode; BindBtn.Text = "["..input.KeyCode.Name:upper().."]"; SettingKey = false; return end
 
@@ -452,22 +442,10 @@ table.insert(_Connections, UIS.InputBegan:Connect(function(input, gp)
     end
 
     if not gp then 
-        -- NEW TOGGLE ACTION
-        if input.KeyCode ~= Enum.KeyCode.Unknown and input.KeyCode == UIToggleKey then 
-            Main.Visible = not Main.Visible 
-        end
-
+        if input.KeyCode ~= Enum.KeyCode.Unknown and input.KeyCode == UIToggleKey then Main.Visible = not Main.Visible end
         if input.KeyCode ~= Enum.KeyCode.Unknown and input.KeyCode == Keybind then 
-            if Mode == "Hold" then 
-                LockedPlayer = findBestTarget()
-                Active = (LockedPlayer ~= nil) 
-            else 
-                Active = not Active
-                if Active then
-                    LockedPlayer = findBestTarget()
-                    if not LockedPlayer then Active = false end 
-                end
-            end 
+            if Mode == "Hold" then LockedPlayer = findBestTarget(); Active = (LockedPlayer ~= nil) 
+            else Active = not Active; if Active then LockedPlayer = findBestTarget(); if not LockedPlayer then Active = false end end end 
         end
         if input.KeyCode == Enum.KeyCode.W then ctrl.f=1 elseif input.KeyCode == Enum.KeyCode.S then ctrl.b=1 end
         if input.KeyCode == Enum.KeyCode.A then ctrl.l=1 elseif input.KeyCode == Enum.KeyCode.D then ctrl.r=1 end
@@ -519,15 +497,11 @@ Players.PlayerRemoving:Connect(function(p)
     end
 end)
 
-LocalPlayer.CharacterAdded:Connect(function()
-    selfOptions.fly.enabled = false
-    tpwalking = false
-    updateSelfBtn(selfOptions.fly.toggleBtn, false, "fly")
-end)
+LocalPlayer.CharacterAdded:Connect(function() selfOptions.fly.enabled = false; tpwalking = false; updateSelfBtn(selfOptions.fly.toggleBtn, false, "fly") end)
 
 pcall(function()
     game:GetService("StarterGui"):SetCore("SendNotification", {
-        Title = "VERSION V.3.3",
+        Title = "VERSION V.3.2",
         Text = "This Script was made by jasonsgunz on Github.",
         Icon = "rbxassetid://6031094670",
         Duration = 6
